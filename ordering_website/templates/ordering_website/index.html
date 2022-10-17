@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<!-- mainpage -->
+<html lang="pl">
+    <head>
+        <title>Winnica Subtilia</title>
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+        <link rel="shortcut icon" href="#" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    </head>
+
+    <body>
+        {% include 'ordering_website/navbar.html' %}
+        {% block content %} 
+
+        {% endblock %}
+    </body>
+
+</html>

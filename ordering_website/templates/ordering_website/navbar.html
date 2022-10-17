@@ -1,0 +1,29 @@
+{% load static %}
+<div class="navbar">
+    <div class="hamburger-menu">
+        <input id="menuToggler" type="checkbox" />
+        <label class="menuButton" for="menuToggler">
+            <span></span>
+        </label>
+        <ul class="menuBox">
+            <li><a class="menuItem" href="{% url 'home' %}">Home</a></li>
+            {% if is_logged %}
+            <li><a class="menuItem" href="">Profile</a></li>
+            {% endif %}
+            {% if is_logged %}
+            {% endif %}
+            <li><a class="menuItem" href="">Cos tam</a></li>
+        </ul>
+    </div>
+    <div class="website-title">
+        <span><a href="{% url 'home' %}">Winnica</a></span>
+    </div>
+    <div class="top-right">
+        {% if not is_logged %}
+        <a class="signup" href="">Sign up</a>
+        <a class="loginin" href="">Login</a>
+        {% else %}
+        <a class="logout" href="">Log out</a>
+        {% endif %}
+    </div>
+</div>

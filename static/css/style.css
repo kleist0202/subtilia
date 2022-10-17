@@ -1,0 +1,142 @@
+
+body {
+    margin:0;
+    margin-top: 60px; 
+    background: #f1f1f1;
+}
+
+.mainContent {
+    min-height: 85.3vh;
+    position: relative;
+    top: 20px;
+}
+
+/* navigation bar */
+
+.navbar {
+    z-index: 1;
+    overflow: hidden;
+    background-color: #333;
+    position: fixed;
+    top: 0; 
+    height: 60px;
+    width: 100%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.top-right a {
+    font-weight: bold;
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    padding: 0px 16px;
+    text-decoration: none;
+    height: 60px;
+    line-height: 60px;
+}
+
+.top-right a:hover {
+    background: #999999;
+}
+
+.top-right {
+    top: 0px;
+    right: 0px;
+    position: absolute;
+    float: right;
+}
+
+/* name */
+
+.website-title {
+    display: flex;
+    align-items: center;
+    top: 0px;
+    left: 65px;
+    height: 60px;
+    position: absolute;
+}
+
+.website-title a {
+    font-weight: bold;
+    font-size: 34px;
+    color: red;
+    text-decoration: none;
+}
+
+/* hamburger menu */
+
+#menuToggler {
+    opacity: 0;
+}
+#menuToggler:checked + .menuButton > span {
+    transform: rotate(45deg);
+}
+#menuToggler:checked + .menuButton > span::before {
+    top: 0;
+    transform: rotate(0deg);
+}
+#menuToggler:checked + .menuButton > span::after {
+    top: 0;
+    transform: rotate(90deg);
+}
+#menuToggler:checked ~ .menuBox {
+    left: 0 !important;
+}
+
+.menuButton {
+    position: fixed;
+    top: 30px;
+    left: 20px;
+    width: 26px;
+    height: 26px;
+    cursor: pointer;
+    z-index: 1;
+} 
+
+.menuButton > span,
+.menuButton > span::before,
+.menuButton > span::after {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    background-color: #f2f2f2;
+    transition-duration: .25s;
+}
+
+.menuButton > span::before {
+    content: '';
+    top: -8px;
+}
+
+.menuButton > span::after {
+    content: '';
+    top: 8px;
+}
+
+.menuBox {
+    display: block;
+    position: fixed;
+    top: 60px;
+    left: -100%;
+    width: 333px;
+    margin: 0;
+    padding: 20px 0;
+    list-style: none;
+    background-color: #333;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, .4);
+    transition-duration: .25s;
+}
+
+.menuItem {
+    display: block;
+    padding: 12px 24px;
+    color: #f2f2f2;
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: none;
+}
+.menuItem:hover {
+    background-color: #999999;
+}
