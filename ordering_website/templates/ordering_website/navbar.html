@@ -20,7 +20,7 @@
     </div>
     <div class="top-right">
         {% if not is_logged %}
-        <a class="signup" href="">Sign up</a>
+        <a class="signup" href="{% url 'registration' %}">Sign up</a>
         <a class="loginin" href="">Login</a>
         {% else %}
         <a class="logout" href="">Log out</a>

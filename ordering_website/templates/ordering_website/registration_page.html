@@ -1,0 +1,45 @@
+{% extends 'ordering_website/index.html' %}
+
+{% block content %}
+
+{% load static %}
+
+<div class="mainContent">
+    <div class="centerDiv">
+        <div class="header">
+            <span>Sign up</span>
+        </div>
+
+        <form action="{% url 'registration' %}" id="contact" method="POST">
+            {% csrf_token %}
+
+            <div class="register bigButton">
+            {{ form.email }}
+            {{ form.name }}
+            {{ form.surname }}
+            {{ form.password }}
+            {{ form.confirm_password }}
+            {{ form.phone_number }}
+            {{ form.city }}
+            {{ form.zip_code }}
+
+            <div>
+                <span class="error">{{ form.errors }}</span>
+            </div>
+            <button name="submit" type="submit" id="signup">Sign up</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    var form_fields = document.getElementsByTagName('input')
+    form_fields[2].placeholder = 'Your email address';
+    form_fields[3].placeholder = 'Your name';
+    form_fields[4].placeholder = 'Your surname';
+    form_fields[5].placeholder = 'Your password';
+    form_fields[6].placeholder = 'Confirm password';
+
+</script>
+
+{% endblock %}
