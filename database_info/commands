@@ -1,0 +1,8 @@
+sudo -u postgres psql
+-------------------------------------------------------------
+CREATE ROLE subtila_manager LOGIN PASSWORD 'haslo';
+CREATE DATABASE subtila_website;
+GRANT CONNECT ON DATABASE subtila_website TO subtila_manager;
+GRANT USAGE ON SCHEMA public TO subtila_manager;
+-------------------------------------------------------------
+psql -U subtila_manager -d subtila_website
