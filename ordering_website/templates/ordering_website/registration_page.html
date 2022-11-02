@@ -1,4 +1,4 @@
-{% extends 'ordering_website/index.html' %}
+{% extends 'ordering_website/home.html' %}
 
 {% block content %}
 
@@ -7,7 +7,7 @@
 <div class="mainContent">
     <div class="centerDiv">
         <div class="header">
-            <span>Sign up</span>
+            <span>Rejestracja</span>
         </div>
 
         <form action="{% url 'registration' %}" id="contact" method="POST">
@@ -15,13 +15,8 @@
 
             <div class="register bigButton">
             {{ form.email }}
-            {{ form.name }}
-            {{ form.surname }}
             {{ form.password }}
             {{ form.confirm_password }}
-            {{ form.phone_number }}
-            {{ form.city }}
-            {{ form.zip_code }}
 
             <div>
                 <span class="error">{{ form.errors }}</span>
@@ -31,15 +26,5 @@
         </form>
     </div>
 </div>
-
-<script>
-    var form_fields = document.getElementsByTagName('input')
-    form_fields[2].placeholder = 'Your email address';
-    form_fields[3].placeholder = 'Your name';
-    form_fields[4].placeholder = 'Your surname';
-    form_fields[5].placeholder = 'Your password';
-    form_fields[6].placeholder = 'Confirm password';
-
-</script>
 
 {% endblock %}

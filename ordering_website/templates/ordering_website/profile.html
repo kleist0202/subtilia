@@ -1,0 +1,63 @@
+{% extends 'ordering_website/home.html' %}
+
+{% block content %}
+
+{% load static %}
+
+<div class="mainContent">
+
+    <div class = "post">
+
+        <div class="row">
+          <div class="col-75">
+            <div class="container bigButton">
+              <form method="POST">
+                {% csrf_token %}
+              
+                <h2>Mój profil</h2>
+                <h4>Adres e-mail konta:</h4>
+                <span> {{ user.email }} </span>
+                <div class="row">
+                  <div class="col-50">
+                    <h3>Dane rozliczeniowe</h3>
+
+                    <div class="row">
+                        <div class="col-50">
+                            <label for="name">Imię</label>
+                            <input type="text" id="name" name="name" maxlength="255" placeholder="Jan" value="{{ user.name }}">
+                        </div>
+                        <div class="col-50">
+                            <label for="surname">Nazwisko</label>
+                            <input type="text" id="surname" name="surname" maxlength="255" placeholder="Kowalski" value="{{ user.surname }}">
+                        </div>
+                    </div>
+                    <label for="adr"><i class="fa fa-address-card-o"></i> Adres i numer</label>
+                    <input type="text" id="adr" name="adr" pattern="^[a-zA-Z]+?\s\w+$" maxlength="255" placeholder="Sezamkowa 1" value="{{ user.address_and_number }}">
+                    <label for="phone"><i class="fa fa-phone"></i> Numer telefonu</label>
+                    <input type="text" id="phone" name="phone" pattern="[0-9]{9}" maxlength="9" pattern="^\+?1?\d{9,9}$" placeholder="999999999" value="{{ user.phone_number }}">
+
+                    <div class="row">
+                      <div class="col-50">
+                        <label for="city"><i class="fa fa-institution"></i> Miasto</label>
+                        <input type="text" id="city" name="city" maxlength="255"  placeholder="Warszawa" value="{{ user.city }}">
+                      </div>
+                      <div class="col-50">
+                        <label for="zip"><i class="fa fa-envelope"></i> Kod pocztowy</label>
+                        <input type="text" id="zip" name="zip" pattern="\d{2}-\d{3}" maxlength="6" placeholder="99-999" value="{{ user.zip_code }}">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <button name="submit" type="submit" id="save_data">Zapisz dane</button>
+                {% for message in messages %}
+                <span class="{{ message.tags }}">{{ message }}</span>
+                {% endfor %}
+              </form>
+            </div>
+          </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

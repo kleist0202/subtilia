@@ -1,0 +1,38 @@
+{% extends 'ordering_website/home.html' %}
+
+{% block content %}
+
+{% load static %}
+
+<div class="mainContent"> 
+    <div class="centerDiv">
+        <div class="header">
+            <span>Logowanie</span>
+        </div>
+        <form id="contact" method="POST">
+            {% csrf_token %}
+            <div class="login bigButton">
+                <input placeholder="Adres email" type="email" id="userlogin" name="email" tabindex="2" autofocus="true" />
+                <div>
+                    <span class="error"></span>
+                </div>
+                <input placeholder="Hasło" type="password" id="password" name="password" tabindex="3" />
+                <div>
+                    <span class="error" id="password_error"></span>
+                </div>
+                <div>
+                    <span class="error" id="attempt_error"></span>
+                </div>
+                <button name="submit" type="submit" id="signin">Login in</button>
+                {% for message in messages %}
+                <span class="{{ message.tags }}">{{ message }}</span>
+                {% endfor %}
+                <div>
+                    <p>Nie masz konta? <a href="{% url 'registration' %}">Zarejestruj się</a> </p>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

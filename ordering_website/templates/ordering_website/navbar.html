@@ -8,11 +8,8 @@
         <ul class="menuBox">
             <li><a class="menuItem" href="{% url 'home' %}">Home</a></li>
             {% if is_logged %}
-            <li><a class="menuItem" href="">Profile</a></li>
+            <li><a class="menuItem" href="{% url 'profile' %}">Profile</a></li>
             {% endif %}
-            {% if is_logged %}
-            {% endif %}
-            <li><a class="menuItem" href="">Cos tam</a></li>
         </ul>
     </div>
     <div class="website-title">
@@ -21,9 +18,9 @@
     <div class="top-right">
         {% if not is_logged %}
         <a class="signup" href="{% url 'registration' %}">Sign up</a>
-        <a class="loginin" href="">Login</a>
+        <a class="loginin" href="{% url 'login' %}">Login</a>
         {% else %}
-        <a class="logout" href="">Log out</a>
+        <a class="logout" href="{% url 'logout' %}">Log out</a>
         {% endif %}
     </div>
 </div>

@@ -1,0 +1,51 @@
+{% extends 'ordering_website/home.html' %}
+
+{% block content %}
+
+{% load static %}
+{% load ordering_website_extras %}
+
+<div class="mainContent">
+
+    <div class="container">
+        <div class="products-container">
+        {% for wine in wines %}
+            <div class="product" data-name="p-{{ forloop.counter }}">
+                <img src="{% static 'images/wines/'|addstr:wine.wine_id|addstr:'.png' %}" alt="{{ wine.name }}'s image" />
+                <h3>{{ wine.name }}</h3>
+                <div class="price">{{ wine.price }} zł</div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+
+    <div class="products-preview">
+        {% for wine in wines %}
+        <div class="preview" data-target="p-{{ forloop.counter }}">
+            <i class="fa fa-times"></i>
+            <img src="{% static 'images/wines/'|addstr:wine.wine_id|addstr:'.png' %}" alt="">
+            <h3>{{ wine.name }}</h3>
+            <div class="stars">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star-half-o"></i>
+                <span>( 250 )</span>
+            </div>
+            <p>{{ wine.description }}</p>
+            <a href="#">Więcej informacji</a>
+            <div class="price">{{ wine.price }} zł</div>
+            <div class="buttons">
+                <a href="#" class="buy">buy now</a>
+                <a href="#" class="cart">add to cart</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script src="{% static 'js/wine_preview.js' %}">
+</script>
+
+{% endblock %}
