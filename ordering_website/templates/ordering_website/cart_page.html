@@ -1,0 +1,57 @@
+{% extends 'ordering_website/home.html' %}
+
+{% block content %}
+
+{% load static %}
+{% load ordering_website_extras %}
+
+<div class="mainContent">
+
+    <div class="container">
+        <h1>Shopping Cart</h1>
+        <div class="products-cart">
+            <div class="products">
+            {% if items_in_cart %}
+                {% for product in cart_products %}
+                <div class="product">
+                    <img src="{% static 'images/wines/'|addstr:product.wine_id|addstr:'.png' %}" alt="{{ wine.name }}'s image" />
+                    <div class="product-info">
+                        <h3 class="product-name">{{ product.name }}</h3>
+                        <h4 class="product-price">{{ product.price }}zł</h4>
+                        <h4 class="product-offer">50%</h4>
+                        <p class="product-quantity">Ilość: <input value="1" name="" />
+                        <a href="{% url 'remove_from_cart' product.wine_id %}" class="product-remove">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                            <span class="remove">Usuń</span>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="cart-total">
+                <p>
+                    <span>Total price</span>
+                    <span>20zl</span>
+                </p>
+                <p>
+                    <span>Number of items</span>
+                    <span>2</span>
+                </p>
+                <p>
+                    <span>You save</span>
+                    <span>20zl</span>
+                </p>
+                <a href="#">Przejdź do kasy</a>
+            </div>
+            {% else %}
+                <span>W koszyku nie ma żadnych produktów.</span>
+                <a href="{% url 'home' %}" class="continue-shopping">
+                    <i class="fa fa-arrow" aria-hidden="true"></i>
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

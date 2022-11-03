@@ -8,6 +8,7 @@
 <div class="mainContent">
 
     <div class="container">
+        <h1>Produkty</h1>
         <div class="products-container">
         {% for wine in wines %}
             <div class="product" data-name="p-{{ forloop.counter }}">
@@ -21,7 +22,7 @@
 
     <div class="products-preview">
         {% for wine in wines %}
-        <div class="preview" data-target="p-{{ forloop.counter }}">
+        <div class="preview" data-target="p-{{ wine.wine_id }}">
             <i class="fa fa-times"></i>
             <img src="{% static 'images/wines/'|addstr:wine.wine_id|addstr:'.png' %}" alt="">
             <h3>{{ wine.name }}</h3>
@@ -38,7 +39,7 @@
             <div class="price">{{ wine.price }} zł</div>
             <div class="buttons">
                 <a href="#" class="buy">buy now</a>
-                <a href="#" class="cart">add to cart</a>
+                <a href="{% url 'add_to_cart' wine.wine_id %}" class="cart">add to cart</a>
             </div>
         </div>
         {% endfor %}

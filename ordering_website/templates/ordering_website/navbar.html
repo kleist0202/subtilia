@@ -13,9 +13,14 @@
         </ul>
     </div>
     <div class="website-title">
-        <span><a href="{% url 'home' %}">Winnica</a></span>
+        <span><a href="{% url 'home' %}">Subtilia</a></span>
     </div>
     <div class="top-right">
+        <a href="{% url 'cart_page' %}" class="cart-icon"><i class='fa fa-shopping-cart'></i>
+            <div class="circle">
+                <span class="messageNumberInfo">{{ items_in_cart }}</span>
+            </div>
+        </a>
         {% if not is_logged %}
         <a class="signup" href="{% url 'registration' %}">Sign up</a>
         <a class="loginin" href="{% url 'login' %}">Login</a>
