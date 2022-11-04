@@ -6,16 +6,16 @@
 
 <div class="mainContent">
 
-    <div class = "post">
 
         <div class="row">
-          <div class="col-75">
-            <div class="container bigButton">
-              <form method="POST">
+            <div class="col-75">
+                <div class="container bigButton">
+                <h1>Dane profilu</h1>
+                <div class = "profile_frame">
+                <form method="POST">
                 {% csrf_token %}
               
-                <h2>Mój profil</h2>
-                <h4>Adres e-mail konta:</h4>
+                <h3>Adres e-mail konta:</h3>
                 <span> {{ user.email }} </span>
                 <div class="row">
                   <div class="col-50">
