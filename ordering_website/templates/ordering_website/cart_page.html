@@ -12,34 +12,48 @@
         <div class="products-cart">
             <div class="products">
             {% if items_in_cart %}
-                {% for product in cart_products %}
+                <form method="POST"> 
+                {% csrf_token %}
+                {% for product in whole_products %}
                 <div class="product">
-                    <img src="{% static 'images/wines/'|addstr:product.wine_id|addstr:'.png' %}" alt="{{ wine.name }}'s image" />
+                    <img src="{% static 'images/wines/'|addstr:product.0.wine_id|addstr:'.png' %}" alt="{{ product.0.name }}'s image" />
                     <div class="product-info">
-                        <h3 class="product-name">{{ product.name }}</h3>
-                        <h4 class="product-price">{{ product.price }}zł</h4>
+                        <h3 class="product-name">{{ product.0.name }}</h3>
+                        <h4 class="product-price">{{ product.0.price }}zł</h4>
                         <h4 class="product-offer">50%</h4>
-                        <p class="product-quantity">Ilość: <input value="1" name="" />
-                        <a href="{% url 'remove_from_cart' product.wine_id %}" class="product-remove">
+                        <p class="product-quantity">
+                            Ilość:
+                            <input type="number" min="1" step="1" value="{{ product.1 }}" name="{{ 'product_'|addstr:product.0.wine_id }}" />
+                            x {{ product.0.price }} = {{ product.2 }}
+                        <a href="{% url 'remove_from_cart' product.0.wine_id %}" class="product-remove">
                             <i class="fa fa-trash" aria-hidden="true"></i>
                             <span class="remove">Usuń</span>
                         </a>
                     </div>
                 </div>
                 {% endfor %}
+                <div class="cart-options">
+                    <a href="{% url 'home' %}" class="cart-continue"><span>Kontynuuj zakupy</span></a>
+                    <button name="submit" type="submit" id="submit-update-cart" class="cart-update"><span>Przelicz</span></a>
+                </div>
+                </form>
             </div>
             <div class="cart-total">
                 <p>
-                    <span>Total price</span>
-                    <span>20zl</span>
+                    <span>Koszt produktów</span>
+                    <span>{{ sum_price }}</span>
                 </p>
                 <p>
                     <span>Number of items</span>
-                    <span>2</span>
+                    <span>{{ items_in_cart }}</span>
                 </p>
                 <p>
-                    <span>You save</span>
-                    <span>20zl</span>
+                    <span>Dostawa</span>
+                    <span>9.99</span>
+                </p>
+                <p>
+                    <span>Razem z dostawą</span>
+                    <span>{{ total_price }}</span>
                 </p>
                 <a href="#">Przejdź do kasy</a>
             </div>

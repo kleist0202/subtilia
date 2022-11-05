@@ -13,13 +13,11 @@ def home(request):
         is_logged = True
         logged_user = get_user(request)
 
-    items_in_cart = 0
-    if "cart" in request.session:
-        items_in_cart = len(request.session["cart"])
+    items_in_cart = get_cart_items_number(request)
 
     wines = Wine.objects.all()
 
-    data = {"is_logged": is_logged, "wines": wines,  "items_in_cart": items_in_cart}
+    data = {"is_logged": is_logged, "wines": wines, "items_in_cart": items_in_cart}
     return render(request, "ordering_website/home.html", data)
 
 
@@ -27,9 +25,7 @@ def registration_page(request):
     if "email" in request.session:
         return redirect("home")
 
-    items_in_cart = 0
-    if "cart" in request.session:
-        items_in_cart = len(request.session["cart"])
+    items_in_cart = get_cart_items_number(request)
 
     if request.method == "POST":
         form = CreateUserForm(request.POST)
@@ -51,9 +47,7 @@ def login_page(request):
     if "email" in request.session:
         return redirect("home")
 
-    items_in_cart = 0
-    if "cart" in request.session:
-        items_in_cart = len(request.session["cart"])
+    items_in_cart = get_cart_items_number(request)
 
     form = LoginUserForm()
     if request.method == "POST":
@@ -89,9 +83,7 @@ def profile(request):
         is_logged = True
         logged_user = get_user(request)
 
-    items_in_cart = 0
-    if "cart" in request.session:
-        items_in_cart = len(request.session["cart"])
+    items_in_cart = get_cart_items_number(request)
 
     if request.method == "POST":
         name = request.POST["name"]
@@ -108,11 +100,11 @@ def profile(request):
             address_and_number=adrress,
             city=city,
             phone_number=phone,
-            zip_code=zip
+            zip_code=zip,
         )
         logged_user = get_user(request)
 
-        messages.success(request, 'Dane zostały zaktualizowane.')
+        messages.success(request, "Dane zostały zaktualizowane.")
 
     data = {"is_logged": is_logged, "user": logged_user, "items_in_cart": items_in_cart}
 
@@ -122,39 +114,75 @@ def profile(request):
 def cart_page(request):
     is_logged = False
     cart_products = []
+    whole_products = []
+    total_price = 0
+    sum_price = 0
 
-    items_in_cart = 0
-    if "cart" in request.session:
-        items_in_cart = len(request.session["cart"])
+    qty = 1
 
-    if "cart" in request.session:
-        wines_ids = request.session["cart"]
-        cart_products = Wine.objects.filter(wine_id__in=wines_ids)
+    for id, qty in request.session["cart"].items():
+        if request.method == "POST":
+            qty = request.POST["product_" + str(id)]
+
+            dic = request.session["cart"]
+            dic[str(id)] = int(qty)
+            request.session["cart"] = dic
+
+        cp = Wine.objects.get(pk=id)
+        price = int(qty) * float(cp.price)
+        whole_products.append([cp, qty, price])
+        sum_price += price
 
     if "email" in request.session:
         is_logged = True
-        logged_user = get_user(request)
 
-    data = {"is_logged": is_logged, "cart_products": cart_products, "items_in_cart": items_in_cart}
+    total_price = float(sum_price) + 9.99
+
+    items_in_cart = get_cart_items_number(request)
+
+    data = {
+        "is_logged": is_logged,
+        "whole_products": whole_products,
+        "items_in_cart": items_in_cart,
+        "sum_price": sum_price,
+        "total_price": total_price,
+    }
     return render(request, "ordering_website/cart_page.html", data)
 
 
+def get_cart_items_number(request):
+    if "cart" not in request.session:
+        return 0
+
+    items = 0
+    for _, k in request.session["cart"].items():
+        items += k
+    return items
+
+
 def add_to_cart(request, wine_id):
+    # del request.session["cart"]
     if "cart" not in request.session:
         print("New session")
-        request.session["cart"] = []
+        request.session["cart"] = {}
 
-    saved_list = request.session["cart"]
-    saved_list.append(wine_id)
-    request.session['cart'] = saved_list
+    print(wine_id,request.session["cart"].keys())
+    if str(wine_id) not in request.session["cart"].keys():
+        print("New wine")
+        request.session["cart"][str(wine_id)] = 0
+
+    dic = request.session["cart"]
+    dic[str(wine_id)] += 1
+    request.session["cart"] = dic
+    print(request.session["cart"])
 
     return redirect("home")
 
 
 def remove_from_cart(request, wine_id):
     if "cart" in request.session:
-        saved_list = request.session["cart"]
-        saved_list = [i for i in saved_list if i != wine_id]
-        request.session['cart'] = saved_list
+        dic = request.session["cart"]
+        dic.pop(str(wine_id))
+        request.session["cart"] = dic
 
     return redirect("cart_page")
