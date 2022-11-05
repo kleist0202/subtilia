@@ -1,0 +1,53 @@
+{% extends 'ordering_website/home.html' %}
+
+{% block content %}
+
+{% load static %}
+{% load ordering_website_extras %}
+
+<div class="mainContent">
+
+    <div class="container">
+        <div class="card">
+            <!-- left -->
+            <div class="product-imgs">
+                <div class="img-display">
+                    <img src="{% static 'images/wines/'|addstr:wine.wine_id|addstr:'.png' %}" alt="{{ wine.name }}'s image">
+                </div>
+            </div>
+            <!-- right -->
+            <div class = "product-content">
+                <h2 class="product-title">{{ wine.name }}</h2>
+                <div class ="stars">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <span>5.0 (250)</span>
+                </div>
+                <div class="product-price">
+                    <p class="last-price"><span>{{ wine.price }}zl</span></p>
+                </div>
+                <div class="product-detail">
+                    <h2>O produkcie: </h2>
+                    <p>{{ wine.description }}</p>
+                    <ul>
+                        <li><i class="fa fa-check-circle"></i> Color: <span>Black</span></li>
+                        <li><i class="fa fa-check-circle"></i> Kategory: <span>Black</span></li>
+                        <li><i class="fa fa-check-circle"></i> Smak: <span>Black</span></li>
+                    <div class="dead-end"></div>
+                </div>
+                <div class="purchase-info">
+                    <input type="number" min="1" value="1" step="1">
+                    <div class="buttons">
+                        <a href="{% url 'add_to_cart' wine.wine_id %}" class="cart" >Dodaj to koszyka <i class="fa fa-shopping-cart"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

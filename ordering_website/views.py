@@ -186,3 +186,13 @@ def remove_from_cart(request, wine_id):
         request.session["cart"] = dic
 
     return redirect("cart_page")
+
+
+def wine_page(request, wine_id):
+    chosen_wine = Wine.objects.get(pk=wine_id)
+    print(chosen_wine.name)
+
+    items_in_cart = get_cart_items_number(request)
+
+    data = {"wine": chosen_wine, "items_in_cart": items_in_cart}
+    return render(request, "ordering_website/wine_page.html", data)

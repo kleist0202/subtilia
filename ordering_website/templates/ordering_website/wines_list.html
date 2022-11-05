@@ -35,11 +35,11 @@
                 <span>( 250 )</span>
             </div>
             <p>{{ wine.description }}</p>
-            <a href="#">Więcej informacji</a>
+            <a href="{% url 'wine_page' wine.wine_id %}">Więcej informacji</a>
             <div class="price">{{ wine.price }} zł</div>
             <div class="buttons">
-                <a href="#" class="buy">buy now</a>
-                <a href="{% url 'add_to_cart' wine.wine_id %}" class="cart">add to cart</a>
+                <a href="#" class="buy">Kup teraz</a>
+                <a href="{% url 'add_to_cart' wine.wine_id %}" class="cart">Dodaj to koszyka <i class="fa fa-shopping-cart"></i></a>
             </div>
         </div>
         {% endfor %}
