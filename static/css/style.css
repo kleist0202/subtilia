@@ -38,7 +38,7 @@ body {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.1);
 }
 
-.top-right a {
+.top-right a, span.admin-label {
     font-weight: bold;
     float: left;
     display: block;
@@ -48,6 +48,11 @@ body {
     height: 60px;
     line-height: 60px;
     font-size: 1.3rem;
+}
+
+.top-right span.admin-label {
+    color: red;
+    padding: 0px 4px;
 }
 
 .top-right a:hover {
@@ -759,10 +764,11 @@ span.price {
 }
 
 .product-content {
-    margin-left: 20px;
+    /* margin-left: 20px; */
+    margin: 0;
     padding: 20px;
     height: auto;
-    /* height: 52rem; */
+    min-width: 38rem;
     border: 1px solid #aaa;
     border-radius: 5px;
     background: #fff;
@@ -921,6 +927,10 @@ span.price {
         top: 10px;
         left: 0;
         position: relative;
+    }
+
+    .product-content {
+        min-width: 0;
     }
 
     .dead-end {

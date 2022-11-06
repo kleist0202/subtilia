@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import User
+from .models import User, Wine
 from django import forms
 from django.contrib.auth.hashers import make_password
 
@@ -50,3 +50,19 @@ class LoginUserForm(ModelForm):
     class Meta:
         model = User
         fields = ["email", "password"]
+
+
+class AddWineForm(ModelForm):
+    name = forms.CharField(
+        widget=forms.TextInput(attrs={"placeholder": "Nazwa wina"})
+    )
+    description = forms.CharField(
+        widget=forms.Textarea(attrs={"placeholder": "Opis", "rows":5, "cols":23, "style": "resize: none"}),
+    )
+    price = forms.DecimalField(
+        widget=forms.TextInput(attrs={"placeholder": "Cena"}),
+    )
+
+    class Meta:
+        model = Wine
+        fields = ["name", "description", "price", "image"]

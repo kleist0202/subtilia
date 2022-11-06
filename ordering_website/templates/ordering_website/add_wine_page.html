@@ -1,0 +1,37 @@
+{% extends 'ordering_website/home.html' %}
+
+{% block content %}
+
+{% load static %}
+{% load ordering_website_extras %}
+
+<div class="mainContent">
+    <div class="centerDiv">
+        <div class="header">
+            <span>Add wine</span>
+        </div>
+
+        <form action="{% url 'add_wine_page' %}" id="contact" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="register bigButton">
+            {{ form.name }}
+            {{ form.description }}
+            {{ form.price }}
+            {{ form.image }}
+
+            {% for message in messages %}
+            <span class="{{ message.tags }}">{{ message }}</span>
+            {% endfor %}
+
+            <div>
+                <span class="error">{{ form.errors }}</span>
+                <span class="error">{{ form2.errors }}</span>
+            </div>
+            <button name="submit" type="submit" id="signup">Add</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

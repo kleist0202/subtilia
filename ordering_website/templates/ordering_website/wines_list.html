@@ -11,8 +11,9 @@
         <h1>Produkty</h1>
         <div class="products-container">
         {% for wine in wines %}
-            <div class="product" data-name="p-{{ forloop.counter }}">
-                <img src="{% static 'images/wines/'|addstr:wine.wine_id|addstr:'.png' %}" alt="{{ wine.name }}'s image" />
+            <div class="product" data-name="p-{{ wine.wine_id }}">
+                <!-- <img src="{% static 'images/wines/'|addstr:wine.wine_id|addstr:'.png' %}" alt="{{ wine.name }}'s image" /> -->
+                <img src="{{ wine.image.url }}" alt="{{ wine.name }}'s image" />
                 <h3>{{ wine.name }}</h3>
                 <div class="price">{{ wine.price }} zł</div>
             </div>
@@ -24,7 +25,8 @@
         {% for wine in wines %}
         <div class="preview" data-target="p-{{ wine.wine_id }}">
             <i class="fa fa-times"></i>
-            <img src="{% static 'images/wines/'|addstr:wine.wine_id|addstr:'.png' %}" alt="">
+            <img src="{{ wine.image.url }}" alt="{{ wine.name }}'s image" />
+            <!-- <img src="{% static 'images/wines/'|addstr:wine.wine_id|addstr:'.png' %}" alt=""> -->
             <h3>{{ wine.name }}</h3>
             <div class="stars">
                 <i class="fa fa-star"></i>

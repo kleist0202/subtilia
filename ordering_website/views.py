@@ -1,23 +1,26 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .forms import CreateUserForm, LoginUserForm
+from .forms import CreateUserForm, LoginUserForm, AddWineForm
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password
 from .models import User, Wine
 
 
 def home(request):
-    is_logged = False
-
-    if "email" in request.session:
-        is_logged = True
-        logged_user = get_user(request)
+    logged_user, is_logged = get_user(request)
+    is_admin = check_if_admin(logged_user)
 
     items_in_cart = get_cart_items_number(request)
 
     wines = Wine.objects.all()
 
-    data = {"is_logged": is_logged, "wines": wines, "items_in_cart": items_in_cart}
+    data = {
+        "is_logged": is_logged,
+        "wines": wines,
+        "items_in_cart": items_in_cart,
+        "is_admin": is_admin,
+        "logged_user": logged_user,
+    }
     return render(request, "ordering_website/home.html", data)
 
 
@@ -69,7 +72,10 @@ def login_page(request):
 
 
 def get_user(request):
-    return User.objects.get(email=request.session["email"])
+    if "email" in request.session:
+        return User.objects.get(email=request.session["email"]), True
+
+    return None, False
 
 
 def logout(request):
@@ -79,9 +85,8 @@ def logout(request):
 
 
 def profile(request):
-    if "email" in request.session:
-        is_logged = True
-        logged_user = get_user(request)
+    logged_user, is_logged = get_user(request)
+    is_admin = check_if_admin(logged_user)
 
     items_in_cart = get_cart_items_number(request)
 
@@ -93,7 +98,7 @@ def profile(request):
         phone = request.POST["phone"]
         zip = request.POST["zip"]
 
-        current_user_email = get_user(request).email
+        current_user_email = get_user(request)[0].email
         _ = User.objects.filter(email=current_user_email).update(
             name=name,
             surname=surname,
@@ -102,17 +107,24 @@ def profile(request):
             phone_number=phone,
             zip_code=zip,
         )
-        logged_user = get_user(request)
+        logged_user, _ = get_user(request)
 
         messages.success(request, "Dane zostały zaktualizowane.")
 
-    data = {"is_logged": is_logged, "user": logged_user, "items_in_cart": items_in_cart}
+    data = {
+        "is_logged": is_logged,
+        "items_in_cart": items_in_cart,
+        "is_admin": is_admin,
+        "logged_user": logged_user,
+    }
 
     return render(request, "ordering_website/profile.html", data)
 
 
 def cart_page(request):
-    is_logged = False
+    logged_user, is_logged = get_user(request)
+    is_admin = check_if_admin(logged_user)
+
     cart_products = []
     whole_products = []
     total_price = 0
@@ -133,9 +145,6 @@ def cart_page(request):
         whole_products.append([cp, qty, price])
         sum_price += price
 
-    if "email" in request.session:
-        is_logged = True
-
     total_price = float(sum_price) + 9.99
 
     items_in_cart = get_cart_items_number(request)
@@ -146,6 +155,8 @@ def cart_page(request):
         "items_in_cart": items_in_cart,
         "sum_price": sum_price,
         "total_price": total_price,
+        "is_admin": is_admin,
+        "logged_user": logged_user,
     }
     return render(request, "ordering_website/cart_page.html", data)
 
@@ -166,7 +177,7 @@ def add_to_cart(request, wine_id):
         print("New session")
         request.session["cart"] = {}
 
-    print(wine_id,request.session["cart"].keys())
+    print(wine_id, request.session["cart"].keys())
     if str(wine_id) not in request.session["cart"].keys():
         print("New wine")
         request.session["cart"][str(wine_id)] = 0
@@ -189,10 +200,60 @@ def remove_from_cart(request, wine_id):
 
 
 def wine_page(request, wine_id):
+    logged_user, is_logged = get_user(request)
+    is_admin = check_if_admin(logged_user)
+
     chosen_wine = Wine.objects.get(pk=wine_id)
     print(chosen_wine.name)
 
     items_in_cart = get_cart_items_number(request)
 
-    data = {"wine": chosen_wine, "items_in_cart": items_in_cart}
+    data = {
+        "is_logged": is_logged,
+        "wine": chosen_wine,
+        "items_in_cart": items_in_cart,
+        "is_admin": is_admin,
+        "logged_user": logged_user,
+    }
     return render(request, "ordering_website/wine_page.html", data)
+
+
+def add_wine_page(request):
+    logged_user, is_logged = get_user(request)
+    is_admin = check_if_admin(logged_user)
+
+    items_in_cart = get_cart_items_number(request)
+
+    if request.method == "POST":
+        form = AddWineForm(request.POST, request.FILES)
+        if form.is_valid():
+            print("DZXIALA")
+            form.save()
+            current_wine = form.cleaned_data.get("wine")
+            print(current_wine)
+            messages.success(request, "Wine was created successfully")
+            return redirect("add_wine_page")
+    else:
+        form = AddWineForm()
+
+    data = {
+        "is_logged": is_logged,
+        "is_admin": is_admin,
+        "form": form,
+        "items_in_cart": items_in_cart,
+        "logged_user": logged_user,
+    }
+
+    return render(request, "ordering_website/add_wine_page.html", data)
+
+
+def check_if_admin(logged_user):
+    is_admin = False
+
+    if logged_user is None:
+        return is_admin
+
+    if logged_user.rank == "admin":
+        is_admin = True
+
+    return is_admin

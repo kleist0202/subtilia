@@ -12,7 +12,8 @@
             <!-- left -->
             <div class="product-imgs">
                 <div class="img-display">
-                    <img src="{% static 'images/wines/'|addstr:wine.wine_id|addstr:'.png' %}" alt="{{ wine.name }}'s image">
+                    <img src="{{ wine.image.url }}" alt="{{ wine.name }}'s image" />
+                    <!-- <img src="{% static 'images/wines/'|addstr:wine.wine_id|addstr:'.png' %}" alt="{{ wine.name }}'s image"> -->
                 </div>
             </div>
             <!-- right -->

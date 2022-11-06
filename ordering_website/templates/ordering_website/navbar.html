@@ -8,7 +8,10 @@
         <ul class="menuBox">
             <li><a class="menuItem" href="{% url 'home' %}">Home</a></li>
             {% if is_logged %}
-            <li><a class="menuItem" href="{% url 'profile' %}">Profile</a></li>
+            <li><a class="menuItem" href="{% url 'profile' %}">Profil</a></li>
+            {% if is_admin %}
+            <li><a class="menuItem" href="{% url 'add_wine_page' %}">Dodaj wino</a></li>
+            {% endif %}
             {% endif %}
         </ul>
     </div>
@@ -16,6 +19,14 @@
         <span><a href="{% url 'home' %}">Subtilia</a></span>
     </div>
     <div class="top-right">
+        {% if is_admin %}
+        <span class="admin-label">Admin:</span>
+        {% endif %}
+        {% if logged_user.name %}
+        <a href="{% url 'profile' %}" class="user-name">{{ logged_user.name }} {{ logged_user.surname }}</a>
+        {% else %}
+        <a href="{% url 'profile' %}" class="user-name">Gość</a>
+        {% endif %}
         <a href="{% url 'cart_page' %}" class="cart-icon"><i class='fa fa-shopping-cart'></i>
             <div class="circle">
                 <span class="messageNumberInfo">{{ items_in_cart }}</span>
