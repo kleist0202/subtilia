@@ -132,20 +132,21 @@ def cart_page(request):
 
     qty = 1
 
-    for id, qty in request.session["cart"].items():
-        if request.method == "POST":
-            qty = request.POST["product_" + str(id)]
+    if "cart" in request.session:
+        for id, qty in request.session["cart"].items():
+            if request.method == "POST":
+                qty = request.POST["product_" + str(id)]
 
-            dic = request.session["cart"]
-            dic[str(id)] = int(qty)
-            request.session["cart"] = dic
+                dic = request.session["cart"]
+                dic[str(id)] = int(qty)
+                request.session["cart"] = dic
 
-        cp = Wine.objects.get(pk=id)
-        price = int(qty) * float(cp.price)
-        whole_products.append([cp, qty, price])
-        sum_price += price
+            cp = Wine.objects.get(pk=id)
+            price = int(qty) * float(cp.price)
+            whole_products.append([cp, qty, price])
+            sum_price += price
 
-    total_price = float(sum_price) + 9.99
+    total_price = round(float(sum_price) + 9.99, 2)
 
     items_in_cart = get_cart_items_number(request)
 
