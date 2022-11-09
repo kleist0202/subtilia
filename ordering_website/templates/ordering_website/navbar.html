@@ -22,11 +22,13 @@
         {% if is_admin %}
         <span class="admin-label">Admin:</span>
         {% endif %}
-        {% if logged_user.name %}
-        <a href="{% url 'profile' %}" class="user-name">{{ logged_user.name }} {{ logged_user.surname }}</a>
-        {% else %}
-        <a href="{% url 'profile' %}" class="user-name">Gość</a>
-        {% endif %}
+            {% if is_logged %}
+                {% if logged_user.name or logged_user.surname %}
+                <a href="{% url 'profile' %}" class="user-name">{{ logged_user.name }} {{ logged_user.surname }}</a>
+                {% else %}
+                <a href="{% url 'profile' %}" class="user-name">Gość</a>
+                {% endif %}
+            {% endif %}
         <a href="{% url 'cart_page' %}" class="cart-icon"><i class='fa fa-shopping-cart'></i>
             <div class="circle">
                 <span class="messageNumberInfo">{{ items_in_cart }}</span>
