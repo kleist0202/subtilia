@@ -71,13 +71,6 @@ def login_page(request):
     return render(request, "ordering_website/login_page.html", data)
 
 
-def get_user(request):
-    if "email" in request.session:
-        return User.objects.get(email=request.session["email"]), True
-
-    return None, False
-
-
 def logout(request):
     if "email" in request.session:
         del request.session["email"]
@@ -85,6 +78,9 @@ def logout(request):
 
 
 def profile(request):
+    if "email" not in request.session:
+        return redirect("home")
+
     logged_user, is_logged = get_user(request)
     is_admin = check_if_admin(logged_user)
 
@@ -160,16 +156,6 @@ def cart_page(request):
         "logged_user": logged_user,
     }
     return render(request, "ordering_website/cart_page.html", data)
-
-
-def get_cart_items_number(request):
-    if "cart" not in request.session:
-        return 0
-
-    items = 0
-    for _, k in request.session["cart"].items():
-        items += k
-    return items
 
 
 def add_to_cart(request, wine_id):
@@ -248,6 +234,9 @@ def add_wine_page(request):
     return render(request, "ordering_website/add_wine_page.html", data)
 
 
+# ------------------ useful functions ---------------------
+
+
 def check_if_admin(logged_user):
     is_admin = False
 
@@ -258,3 +247,22 @@ def check_if_admin(logged_user):
         is_admin = True
 
     return is_admin
+
+
+def get_user(request):
+    if "email" in request.session:
+        return User.objects.get(email=request.session["email"]), True
+
+    return None, False
+
+
+def get_cart_items_number(request):
+    if "cart" not in request.session:
+        return 0
+
+    items = 0
+    for _, k in request.session["cart"].items():
+        items += k
+    return items
+
+
