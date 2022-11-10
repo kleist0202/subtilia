@@ -1,5 +1,5 @@
 from django.db import models
-from django.core.validators import RegexValidator
+from django.core.validators import MaxValueValidator, MinValueValidator, RegexValidator
 
 import uuid
 
@@ -43,6 +43,14 @@ class Wine(models.Model):
     name = models.CharField(unique=True, max_length=255)
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
+    producer = models.CharField(max_length=100)
+    color = models.CharField(max_length=100)
+    flavor = models.CharField(max_length=100)
+    strain = models.CharField(max_length=100)
+    aroma = models.CharField(max_length=100)
+    in_stock = models.PositiveIntegerField(validators=[MinValueValidator(0), MaxValueValidator(1000)])
+    vol = models.DecimalField(max_digits=3, decimal_places=1)
+    size = models.PositiveIntegerField(validators=[MinValueValidator(0), MaxValueValidator(1000)])
     image = models.ImageField(upload_to='wines')
 
     def __str__(self):

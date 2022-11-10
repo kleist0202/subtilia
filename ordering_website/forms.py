@@ -53,16 +53,50 @@ class LoginUserForm(ModelForm):
 
 
 class AddWineForm(ModelForm):
-    name = forms.CharField(
-        widget=forms.TextInput(attrs={"placeholder": "Nazwa wina"})
-    )
+    name = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "Nazwa wina"}))
     description = forms.CharField(
-        widget=forms.Textarea(attrs={"placeholder": "Opis", "rows":5, "cols":23, "style": "resize: none"}),
+        widget=forms.Textarea(
+            attrs={
+                "placeholder": "Opis",
+                "rows": 5,
+                "cols": 23,
+                "style": "resize: none",
+            }
+        ),
     )
     price = forms.DecimalField(
         widget=forms.TextInput(attrs={"placeholder": "Cena"}),
     )
+    producer = forms.CharField(
+        widget=forms.TextInput(attrs={"placeholder": "Producent"})
+    )
+    color = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "Color"}))
+    flavor = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "Smak"}))
+    strain = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "Szczep"}))
+    aroma = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "Aromat"}))
+    vol = forms.DecimalField(widget=forms.TextInput(attrs={"placeholder": "Alkohol [%]"}))
+    size = forms.DecimalField(widget=forms.TextInput(attrs={"placeholder": "Objętość [ml]"}))
+    in_stock = forms.DecimalField(widget=forms.TextInput(attrs={"placeholder": "Ilość produktu na magazynie"}))
+
+    error_messages = {
+        'in_stock': {
+            'validators': ("This writer's name is too long."),
+        },
+    }
 
     class Meta:
         model = Wine
-        fields = ["name", "description", "price", "image"]
+        fields = [
+            "name",
+            "description",
+            "price",
+            "producer",
+            "image",
+            "color",
+            "flavor",
+            "strain",
+            "aroma",
+            "vol",
+            "size",
+            "in_stock",
+        ]

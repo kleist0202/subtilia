@@ -5,32 +5,96 @@
 {% load static %}
 {% load ordering_website_extras %}
 
+<!-- <div class="mainContent"> -->
+<!--     <div class="centerDiv"> -->
+<!--         <div class="header"> -->
+<!--             <span>Add wine</span> -->
+<!--         </div> -->
+<!---->
+<!--         <form action="{% url 'add_wine_page' %}" id="contact" method="POST" enctype="multipart/form-data"> -->
+<!--             {% csrf_token %} -->
+<!---->
+<!--             <div class="register bigButton"> -->
+<!--             {{ form.name }} -->
+<!--             {{ form.description }} -->
+<!--             {{ form.price }} -->
+<!--             {{ form.image }} -->
+<!---->
+<!--             {% for message in messages %} -->
+<!--             <span class="{{ message.tags }}">{{ message }}</span> -->
+<!--             {% endfor %} -->
+<!---->
+<!--             <div> -->
+<!--                 <span class="error">{{ form.errors }}</span> -->
+<!--                 <span class="error">{{ form2.errors }}</span> -->
+<!--             </div> -->
+<!--             <button name="submit" type="submit" id="signup">Add</button> -->
+<!--             </div> -->
+<!--         </form> -->
+<!--     </div> -->
+<!-- </div> -->
+
 <div class="mainContent">
-    <div class="centerDiv">
-        <div class="header">
-            <span>Add wine</span>
+    <div class="row">
+        <div class="col-75">
+            <div class="container bigButton">
+                <h1>Dodaj wino</h1>
+                <div class = "profile_frame">
+                    <form action="{% url 'add_wine_page' %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="col-50">
+                            <div class="row">
+                                <div class="col-50">
+                                    {{ form.name }}
+                                </div>
+                                <div class="col-50">
+                                    {{ form.producer }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-25">
+                                    {{ form.price }}
+                                </div>
+                                <div class="col-25">
+                                    {{ form.vol }}
+                                </div>
+                                <div class="col-25">
+                                    {{ form.size }}
+                                </div>
+                            </div>
+                            {{ form.description }}
+                            <div class="row">
+                                <div class="col-25">
+                                    {{ form.color }}
+                                </div>
+                                <div class="col-25">
+                                    {{ form.flavor }}
+                                </div>
+                                <div class="col-25">
+                                    {{ form.strain }}
+                                </div>
+                                <div class="col-25">
+                                    {{ form.aroma }}
+                                </div>
+                            </div>
+                            {{ form.in_stock }}
+                            {{ form.image }}
+
+                            {% for message in messages %}
+                            <span class="{{ message.tags }}">{{ message }}</span>
+                            {% endfor %}
+
+                                <div>
+                                    <span class="error">{{ form.errors }}</span>
+                                    <span class="error">{{ form2.errors }}</span>
+                                </div>
+                        </div>
+                        <button name="submit" type="submit" id="signup">Gotowe</button>
+                    </form>
+                </div>
+            </div>
         </div>
-
-        <form action="{% url 'add_wine_page' %}" id="contact" method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-
-            <div class="register bigButton">
-            {{ form.name }}
-            {{ form.description }}
-            {{ form.price }}
-            {{ form.image }}
-
-            {% for message in messages %}
-            <span class="{{ message.tags }}">{{ message }}</span>
-            {% endfor %}
-
-            <div>
-                <span class="error">{{ form.errors }}</span>
-                <span class="error">{{ form2.errors }}</span>
-            </div>
-            <button name="submit" type="submit" id="signup">Add</button>
-            </div>
-        </form>
     </div>
 </div>
 

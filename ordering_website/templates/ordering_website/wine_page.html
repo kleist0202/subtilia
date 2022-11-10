@@ -30,16 +30,24 @@
                 <div class="product-price">
                     <p class="last-price"><span>{{ wine.price }}zl</span></p>
                 </div>
+                <div class="initial-detail">
+                <p>Vol: {{ wine.vol }}%</p>
+                <p>Objętość: {{ wine.size }}ml</p>
+                </div>
                 <div class="product-detail">
                     <h2>O produkcie: </h2>
                     <p>{{ wine.description }}</p>
                     <ul>
-                        <li><i class="fa fa-check-circle"></i> Color: <span>Black</span></li>
-                        <li><i class="fa fa-check-circle"></i> Kategory: <span>Black</span></li>
-                        <li><i class="fa fa-check-circle"></i> Smak: <span>Black</span></li>
+                        <li><i class="fa fa-check-circle"></i> Kolor: <span>{{ wine.color }}</span></li>
+                        <li><i class="fa fa-check-circle"></i> Smak: <span>{{ wine.flavor }}</span></li>
+                        <li><i class="fa fa-check-circle"></i> Aromat: <span>{{ wine.aroma }}</span></li>
+                        <li><i class="fa fa-check-circle"></i> Szczep: <span>{{ wine.strain }}</span></li>
+                    </ul>
+                    <p>Producent: {{ wine.producer }}</p>
                     <div class="dead-end"></div>
                 </div>
                 <div class="purchase-info">
+                    <p>Dostepna ilość: {{ wine.in_stock }}</p>
                     <input type="number" min="1" value="1" step="1">
                     <div class="buttons">
                         <a href="{% url 'add_to_cart' wine.wine_id %}" class="cart" >Dodaj to koszyka <i class="fa fa-shopping-cart"></i></a>
