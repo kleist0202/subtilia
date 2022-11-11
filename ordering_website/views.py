@@ -209,6 +209,9 @@ def add_wine_page(request):
     logged_user, is_logged = get_user(request)
     is_admin = check_if_admin(logged_user)
 
+    if not is_admin:
+        return redirect("home")
+
     items_in_cart = get_cart_items_number(request)
 
     if request.method == "POST":
