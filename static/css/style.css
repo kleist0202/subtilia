@@ -907,6 +907,11 @@ span.price {
     height: 9rem;
 }
 
+
+.admin-action:hover {
+    color: red;
+}
+
 /* overall */
 
 @media (max-width:1100px) {

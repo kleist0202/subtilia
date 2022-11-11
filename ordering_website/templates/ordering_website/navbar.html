@@ -10,7 +10,7 @@
             {% if is_logged %}
             <li><a class="menuItem" href="{% url 'profile' %}">Profil</a></li>
             {% if is_admin %}
-            <li><a class="menuItem" href="{% url 'add_wine_page' %}">Dodaj wino</a></li>
+            <li><a class="menuItem admin-action" href="{% url 'add_wine_page' %}">Dodaj wino</a></li>
             {% endif %}
             {% endif %}
         </ul>
