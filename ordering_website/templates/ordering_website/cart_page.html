@@ -16,7 +16,7 @@
                 {% csrf_token %}
                 {% for product in whole_products %}
                 <div class="product">
-                    <a href="{% url 'wine_page' product.0.wine_id %}"><img class="product-img" src="{{ product.0.image.url }}" alt="{{ product.0.name }}'s image" /></a>
+                    <a class="img-link" href="{% url 'wine_page' product.0.wine_id %}"><img class="product-img" src="{{ product.0.image.url }}" alt="{{ product.0.name }}'s image" /></a>
                     <div class="product-info">
                         <h3 class="product-name">{{ product.0.name }}</h3>
                         <h4 class="product-price">{{ product.0.price }}zł</h4>
