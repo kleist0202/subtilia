@@ -534,6 +534,10 @@ span.price {
     height: 20rem;
 }
 
+.products-preview .preview .img-link img:hover {
+    transform: scale(.9);
+}
+
 .products-preview .preview .fa-times {
     position: absolute;
     top: 1rem; right: 1.5rem;

@@ -28,7 +28,7 @@
         {% for wine in wines %}
         <div class="preview" data-target="p-{{ wine.wine_id }}">
             <i class="fa fa-times"></i>
-            <img src="{{ wine.image.url }}" alt="{{ wine.name }}'s image" />
+            <a class="img-link" href="{% url 'wine_page' wine.wine_id %}"><img src="{{ wine.image.url }}" alt="{{ wine.name }}'s image" /></a>
             <!-- <img src="{% static 'images/wines/'|addstr:wine.wine_id|addstr:'.png' %}" alt=""> -->
             <h3>{{ wine.name }}</h3>
             <div class="stars">
