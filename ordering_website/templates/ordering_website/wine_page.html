@@ -18,7 +18,12 @@
             </div>
             <!-- right -->
             <div class = "product-content">
-                <h2 class="product-title">{{ wine.name }}</h2>
+                {% for message in messages %}
+                <span class="{{ message.tags }}">{{ message }}</span>
+                {% endfor %}
+                {% if is_admin %}
+                <h2 class="product-title">{{ wine.name }}<a class="update-button admin-action" href="{% url 'update_wine_page' wine.wine_id %}">Zaktualizuj</a></h2>
+                {% endif %}
                 <div class ="stars">
                     <i class="fa fa-star"></i>
                     <i class="fa fa-star"></i>

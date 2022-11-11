@@ -907,6 +907,19 @@ span.price {
     height: 9rem;
 }
 
+.update-button {
+    font-size: 1.2rem;
+    background-color:#98142e;
+    border:1px solid #660000;
+    color:#fff;
+    margin-left: 10px;
+    padding: 4px 4px;
+    text-decoration: none;
+}
+
+.update-button:hover {
+    background-color:#660000;
+}
 
 .admin-action:hover {
     color: red;

@@ -237,6 +237,35 @@ def add_wine_page(request):
     return render(request, "ordering_website/add_wine_page.html", data)
 
 
+def update_wine_page(request, wine_id):
+    logged_user, is_logged = get_user(request)
+    is_admin = check_if_admin(logged_user)
+
+    items_in_cart = get_cart_items_number(request)
+
+    if not is_admin:
+        return redirect("home")
+
+    wine = Wine.objects.get(pk=wine_id)
+    form = AddWineForm(instance=wine)
+
+    if request.method == "POST":
+        form = AddWineForm(request.POST, request.FILES, instance=wine)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Wine was updated successfully")
+            return redirect("wine_page", wine_id)
+
+    data = {
+        "is_logged": is_logged,
+        "is_admin": is_admin,
+        "form": form,
+        "items_in_cart": items_in_cart,
+        "logged_user": logged_user,
+    }
+    return render(request, "ordering_website/update_wine_page.html", data)
+
+
 # ------------------ useful functions ---------------------
 
 
