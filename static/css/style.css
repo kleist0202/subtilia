@@ -498,6 +498,12 @@ span.price {
     color: #444;
 }
 
+.sold {
+    font-size: 1.2rem;
+    padding: 10px;
+    color: red;
+}
+
 .products-preview {
     position: fixed;
     top: 0;
@@ -880,7 +886,7 @@ span.price {
     height: 8rem;
 }
 
-.product-content .buttons a.cart {
+.product-content .buttons button.cart {
     /* flex: 1 1 10rem; */
     /* width: 15rem; */
     padding: 1rem;
@@ -897,9 +903,10 @@ span.price {
     position: relative;
     top: 10px;
     bottom: 10px;
+    cursor: pointer;
 }
 
-.product-content .buttons a.cart:hover {
+.product-content .buttons button.cart:hover {
     background: #691426;
 }
 

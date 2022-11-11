@@ -81,9 +81,11 @@
                             {{ form.in_stock }}
                             {{ form.image }}
 
-                            {% for message in messages %}
-                            <span class="{{ message.tags }}">{{ message }}</span>
-                            {% endfor %}
+                            {%for message in messages %}
+                                {%if "wine_created" in message.tags %}
+                                    <span class="{{ message.tags }}">{{ message }}</span>
+                                {%endif%}
+                            {%endfor%}
 
                                 <div>
                                     <span class="error">{{ form.errors }}</span>

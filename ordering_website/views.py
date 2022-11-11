@@ -164,12 +164,18 @@ def add_to_cart(request, wine_id):
         print("New session")
         request.session["cart"] = {}
 
+    wine = Wine.objects.get(pk=wine_id)
+    wine_quantity = wine.in_stock
+
     print(wine_id, request.session["cart"].keys())
     if str(wine_id) not in request.session["cart"].keys():
         print("New wine")
         request.session["cart"][str(wine_id)] = 0
 
     dic = request.session["cart"]
+    if dic[str(wine_id)] >= wine_quantity:
+        return redirect("home")
+
     dic[str(wine_id)] += 1
     request.session["cart"] = dic
     print(request.session["cart"])
@@ -191,7 +197,28 @@ def wine_page(request, wine_id):
     is_admin = check_if_admin(logged_user)
 
     chosen_wine = Wine.objects.get(pk=wine_id)
-    print(chosen_wine.name)
+
+    if "cart" not in request.session:
+        print("New cart session")
+        request.session["cart"] = {}
+
+    if "cart" in request.session:
+        if request.method == "POST":
+            if str(wine_id) not in request.session["cart"].keys():
+                print("New wine")
+                request.session["cart"][str(wine_id)] = 0
+
+            for id, qty in request.session["cart"].items():
+                qty = int(request.POST["product_num"])
+
+                dic = request.session["cart"]
+
+                if dic[str(wine_id)] + qty > chosen_wine.in_stock:
+                    messages.error(request, "Podana liczba przekracza dostępną ilość produktu!", extra_tags='too_much')
+                    break
+                else:
+                    dic[str(id)] += qty
+                    request.session["cart"] = dic
 
     items_in_cart = get_cart_items_number(request)
 
@@ -217,11 +244,9 @@ def add_wine_page(request):
     if request.method == "POST":
         form = AddWineForm(request.POST, request.FILES)
         if form.is_valid():
-            print("DZXIALA")
             form.save()
             current_wine = form.cleaned_data.get("wine")
-            print(current_wine)
-            messages.success(request, "Wine was created successfully")
+            messages.success(request, "Wine was created successfully", extra_tags="wine_created")
             return redirect("add_wine_page")
     else:
         form = AddWineForm()
@@ -253,7 +278,7 @@ def update_wine_page(request, wine_id):
         form = AddWineForm(request.POST, request.FILES, instance=wine)
         if form.is_valid():
             form.save()
-            messages.success(request, "Wine was updated successfully")
+            messages.success(request, "Wine was updated successfully", extra_tags="wine_updated")
             return redirect("wine_page", wine_id)
 
     data = {

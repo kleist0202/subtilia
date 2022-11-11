@@ -16,6 +16,9 @@
                 <img src="{{ wine.image.url }}" alt="{{ wine.name }}'s image" />
                 <h3>{{ wine.name }}</h3>
                 <div class="price">{{ wine.price }} zł</div>
+                {% if not wine.in_stock %}
+                <div class="sold">Wyprzedane</div>
+                {% endif %}
             </div>
         {% endfor %}
         </div>
@@ -39,10 +42,14 @@
             <p>{{ wine.description }}</p>
             <a href="{% url 'wine_page' wine.wine_id %}">Więcej informacji</a>
             <div class="price">{{ wine.price }} zł</div>
+            {% if not wine.in_stock %}
+            <div class="sold">Wyprzedane</div>
+            {% else %}
             <div class="buttons">
                 <a href="#" class="buy">Kup teraz</a>
                 <a href="{% url 'add_to_cart' wine.wine_id %}" class="cart">Dodaj to koszyka <i class="fa fa-shopping-cart"></i></a>
             </div>
+            {% endif %}
         </div>
         {% endfor %}
     </div>

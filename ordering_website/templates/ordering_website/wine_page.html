@@ -18,9 +18,11 @@
             </div>
             <!-- right -->
             <div class = "product-content">
-                {% for message in messages %}
-                <span class="{{ message.tags }}">{{ message }}</span>
-                {% endfor %}
+                {%for message in messages %}
+                    {%if "wine_updated" in message.tags %}
+                        <span class="{{ message.tags }}">{{ message }}</span>
+                    {%endif%}
+                {%endfor%}
                 {% if is_admin %}
                 <h2 class="product-title">{{ wine.name }}<a class="update-button admin-action" href="{% url 'update_wine_page' wine.wine_id %}">Zaktualizuj</a></h2>
                 {% endif %}
@@ -52,11 +54,19 @@
                     <div class="dead-end"></div>
                 </div>
                 <div class="purchase-info">
+                    <form method="POST">
+                    {% csrf_token %}
                     <p>Dostepna ilość: {{ wine.in_stock }}</p>
-                    <input type="number" min="1" value="1" step="1">
+                    <input name="product_num" type="number" min="1" value="1" step="1">
+                    {%for message in messages %}
+                        {%if "too_much" in message.tags %}
+                            <span class="{{ message.tags }}">{{ message }}</span>
+                        {%endif%}
+                    {%endfor%}
                     <div class="buttons">
-                        <a href="{% url 'add_to_cart' wine.wine_id %}" class="cart" >Dodaj to koszyka <i class="fa fa-shopping-cart"></i></a>
+                        <button name="submit" type="submit" id="submit-update-cart" class="cart"><span>Dodaj do koszyka</span></a>
                     </div>
+                    </form>
                 </div>
             </div>
         </div>
