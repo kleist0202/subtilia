@@ -562,7 +562,6 @@ span.price {
 
 .products-preview .preview .stars i {
     font-size: 1.7rem;
-    color: #c5b500;     
 }
 
 .products-preview .preview .stars span {
@@ -1123,7 +1122,7 @@ span.price {
 
     .rating-container form .rating-textarea textarea {
         width: auto;
-        height: 99%;
+        height: 98%;
     }
 
     .rating-container form .rating-textarea {
@@ -1133,6 +1132,10 @@ span.price {
     .half-star {
         right: 8px;    
         width: 8px;
+    }
+
+    .star-widget label {
+        padding: 5px;
     }
 }
 

@@ -32,12 +32,18 @@
             <!-- <img src="{% static 'images/wines/'|addstr:wine.wine_id|addstr:'.png' %}" alt=""> -->
             <h3>{{ wine.name }}</h3>
             <div class="stars">
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star-half-o"></i>
-                <span>( 250 )</span>
+                {% for x in star_range %}
+                    {% if x < rating_dict|hash:wine.wine_id|lookup:1|add:1 %}
+                        <i class="fa fa-star yellow-star"></i>
+                    {% else %}
+                    <i class="fa fa-star gray-star">
+                        {% if rating_dict|hash:wine.wine_id|lookup:2 >= 0.5 and x < rating_dict|hash:wine.wine_id|lookup:1|add:2 %}
+                            <i class="fa fa-star half-star"></i>
+                        {% endif %}
+                    </i>
+                    {% endif %}
+                {%endfor%}
+                <span>{{ rating_dict|hash:wine.wine_id|lookup:1 }}({{ rating_dict|hash:wine.wine_id|lookup:0 }})</span>
             </div>
             <p>{{ wine.description }}</p>
             <a href="{% url 'wine_page' wine.wine_id %}">Więcej informacji</a>

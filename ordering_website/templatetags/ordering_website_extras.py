@@ -17,3 +17,7 @@ upto.is_safe = True
 @register.filter
 def hash(h, key):
     return h[key]
+
+@register.filter
+def lookup(d, key):
+    return d[key]

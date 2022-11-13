@@ -13,7 +13,20 @@ def home(request):
 
     items_in_cart = get_cart_items_number(request)
 
+    rating_dict = {}
+
     wines = Wine.objects.all()
+    for wine in wines:
+        wine_rates = [rating.rate for rating in Rating.objects.filter(author_id=logged_user.user_uid, wine_id=wine.wine_id) ]
+
+        rate_len = len(wine_rates)
+        if rate_len:
+            mean_rate = sum(wine_rates) / rate_len
+        else:
+            mean_rate = 0
+        mean_rate = round(mean_rate, 1)
+        decimal_part = mean_rate - math.floor(mean_rate)
+        rating_dict[wine.wine_id] = [rate_len, mean_rate, decimal_part]
 
     data = {
         "is_logged": is_logged,
@@ -21,6 +34,8 @@ def home(request):
         "items_in_cart": items_in_cart,
         "is_admin": is_admin,
         "logged_user": logged_user,
+        "rating_dict": rating_dict,
+        "star_range": range(1,5 + 1)
     }
     return render(request, "ordering_website/home.html", data)
 
@@ -137,7 +152,6 @@ def cart_page(request):
 
             if request.method == "POST":
                 qty = int(request.POST["product_" + str(id)])
-                print(qty, wine.in_stock)
                 if qty > wine.in_stock:
                     messages.error(request, "Podana liczba przekracza dostępną ilość produktu!", extra_tags='too_much')
                 else:
