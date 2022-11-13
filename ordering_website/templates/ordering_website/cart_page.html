@@ -8,6 +8,11 @@
 <div class="mainContent">
 
     <div class="container">
+        {%for message in messages %}
+            {%if "too_much" in message.tags %}
+                <span class="{{ message.tags }}">{{ message }}</span>
+            {%endif%}
+        {%endfor%}
         <h1>Shopping Cart</h1>
         <div class="products-cart">
             <div class="products">
@@ -25,6 +30,7 @@
                             Ilość:
                             <input type="number" min="1" step="1" value="{{ product.1 }}" name="{{ 'product_'|addstr:product.0.wine_id }}" />
                             x {{ product.0.price }} = {{ product.2 }}
+                        </p>
                         <a href="{% url 'remove_from_cart' product.0.wine_id %}" class="product-remove">
                             <i class="fa fa-trash" aria-hidden="true"></i>
                             <span class="remove">Usuń</span>
@@ -32,9 +38,10 @@
                     </div>
                 </div>
                 {% endfor %}
+
                 <div class="cart-options">
                     <a href="{% url 'home' %}" class="cart-continue"><span>Kontynuuj zakupy</span></a>
-                    <button name="submit" type="submit" id="submit-update-cart" class="cart-update"><span>Przelicz</span></a>
+                    <button name="submit" type="submit" id="submit-update-cart" class="cart-update"><span>Przelicz</span>
                 </div>
                 </form>
             </div>
