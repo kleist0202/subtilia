@@ -27,12 +27,18 @@
                 <h2 class="product-title">{{ wine.name }}<a class="update-button admin-action" href="{% url 'update_wine_page' wine.wine_id %}">Zaktualizuj</a></h2>
                 {% endif %}
                 <div class ="stars">
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <span>5.0 (250)</span>
+                    {% for x in star_range %}
+                        {% if x < mean_rate|add:1 %}
+                            <i class="fa fa-star yellow-star"></i>
+                        {% else %}
+                        <i class="fa fa-star gray-star">
+                            {% if decimal_part >= 0.5 and x < mean_rate|add:2 %}
+                                <i class="fa fa-star half-star"></i>
+                            {% endif %}
+                        </i>
+                        {% endif %}
+                    {%endfor%}
+                    <span>{{ mean_rate }} ({{ rate_len }})</span>
                 </div>
                 <div class="product-price">
                     <p class="last-price"><span>{{ wine.price }}zl</span></p>
@@ -69,6 +75,34 @@
                     </form>
                 </div>
             </div>
+        </div>
+        <div class = "rating-container">
+        {% if is_logged %}
+            <h2>Dodaj ocenę</h2>
+            <form method="POST">
+                <div class="star-widget"> 
+                    <input type="radio" value="5" name="rate" id="rate-5">
+                    <label for="rate-5" class="fa fa-star"></label>
+                    <input type="radio" value="4" name="rate" id="rate-4">
+                    <label for="rate-4" class="fa fa-star"></label>
+                    <input type="radio" value="3" name="rate" id="rate-3">
+                    <label for="rate-3" class="fa fa-star"></label>
+                    <input type="radio" value="2" name="rate" id="rate-2">
+                    <label for="rate-2" class="fa fa-star"></label>
+                    <input type="radio" value="1" name="rate" id="rate-1">
+                    <label for="rate-1" class="fa fa-star"></label>
+                </div>
+                {% csrf_token %}
+                <div class="rating-textarea">
+                    <textarea name="rate-message"></textarea>
+                </div>
+                <div class="rating-button">
+                    <button name="submit-rate" type="submit">Post</button>
+                </div>
+            </form>
+        {% else %}
+        Musisz być zalaogowany, że dodać ocenę!
+        {% endif %}
         </div>
     </div>
 

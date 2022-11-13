@@ -3,7 +3,8 @@ from django.http import HttpResponse
 from .forms import CreateUserForm, LoginUserForm, AddWineForm
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password
-from .models import User, Wine
+from .models import Rating, User, Wine
+import math
 
 
 def home(request):
@@ -194,9 +195,22 @@ def remove_from_cart(request, wine_id):
 
 def wine_page(request, wine_id):
     logged_user, is_logged = get_user(request)
+    print(logged_user)
     is_admin = check_if_admin(logged_user)
 
     chosen_wine = Wine.objects.get(pk=wine_id)
+
+    wine_rates = [rating.rate for rating in Rating.objects.filter(author_id=logged_user.user_uid, wine_id=wine_id) ]
+
+    rate_len = len(wine_rates)
+    if rate_len:
+        mean_rate = sum(wine_rates) / rate_len
+    else:
+        mean_rate = 0
+    mean_rate = round(mean_rate, 1)
+    decimal_part = mean_rate - math.floor(mean_rate)
+
+    rate = 0
 
     if "cart" not in request.session:
         print("New cart session")
@@ -205,22 +219,31 @@ def wine_page(request, wine_id):
     if "cart" in request.session:
         if request.method == "POST":
             if str(wine_id) not in request.session["cart"].keys():
-                print("New wine")
                 request.session["cart"][str(wine_id)] = 0
 
             for id, qty in request.session["cart"].items():
-                qty = int(request.POST["product_num"])
+                if "product_num" in request.POST:
+                    qty = int(request.POST["product_num"])
 
-                dic = request.session["cart"]
+                    dic = request.session["cart"]
 
-                if dic[str(wine_id)] + qty > chosen_wine.in_stock:
-                    messages.error(request, "Podana liczba przekracza dostępną ilość produktu!", extra_tags='too_much')
-                    break
-                else:
-                    dic[str(id)] += qty
-                    request.session["cart"] = dic
+                    if dic[str(wine_id)] + qty > chosen_wine.in_stock:
+                        messages.error(request, "Podana liczba przekracza dostępną ilość produktu!", extra_tags='too_much')
+                        break
+                    else:
+                        dic[str(id)] += qty
+                        request.session["cart"] = dic
+
+            if "rate" in request.POST:
+                rate = request.POST["rate"]
+
+            if rate:
+                desc = request.POST["rate-message"]
+                Rating.objects.update_or_create(wine_id=wine_id, author_id=logged_user.user_uid, rate=rate, description=desc)
+            return redirect("wine_page", wine_id)
 
     items_in_cart = get_cart_items_number(request)
+    print(decimal_part)
 
     data = {
         "is_logged": is_logged,
@@ -228,6 +251,10 @@ def wine_page(request, wine_id):
         "items_in_cart": items_in_cart,
         "is_admin": is_admin,
         "logged_user": logged_user,
+        "rate_len": rate_len,
+        "mean_rate": mean_rate,
+        "decimal_part": decimal_part,
+        "star_range": range(1,5 + 1)
     }
     return render(request, "ordering_website/wine_page.html", data)
 

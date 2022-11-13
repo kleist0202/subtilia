@@ -35,7 +35,9 @@ class User(models.Model):
     address_and_number = models.CharField(max_length=255, null=True)
 
     def __str__(self):
-        return self.username
+        if self.name is None or self.surname is None:
+            return "Gość" + str(self.user_uid)
+        return self.name + "_" + self.surname
 
 
 class Wine(models.Model):
@@ -55,3 +57,14 @@ class Wine(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Rating(models.Model):
+    rate_id = models.AutoField(primary_key=True)
+    wine = models.ForeignKey(Wine, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    rate = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    description = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.rate_id

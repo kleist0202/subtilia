@@ -837,7 +837,6 @@ span.price {
 
 .product-content .stars i {
     font-size: 1.7rem;
-    color: #c5b500;     
 }
 
 .product-content .stars span {
@@ -921,7 +920,7 @@ span.price {
 .update-button {
     font-size: 1.2rem;
     background-color:#98142e;
-    border:1px solid #660000;
+    border:1px solid #691426;
     color:#fff;
     margin-left: 10px;
     padding: 4px 4px;
@@ -929,8 +928,121 @@ span.price {
 }
 
 .update-button:hover {
-    background-color:#660000;
+    background-color:#691426;
 }
+
+/* rating */
+
+.rating-container {
+    margin: 0;
+    margin-top: 20px;
+    padding: 20px;
+    height: auto;
+    min-width: 51.7rem;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    background: #fff;
+}
+
+.rating-container form {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.star-widget input {
+    display: none;
+}
+
+.star-widget label {
+    font-size: 2rem;
+    padding: 10px;
+    color: #444;
+    float: right;
+}
+
+.yellow-star {
+    color: #c5b500;     
+}
+
+.gray-star {
+    color: #444;
+    position:relative;
+}
+
+.half-star {
+    position: absolute;
+    width: 10px;    
+    right: 11px;
+    /* left: 114px; */
+    color: #c5b500;
+    overflow: hidden;
+}
+
+.star-widget input:not(:checked) ~ label:hover,
+.star-widget input:not(:checked) ~ label:hover ~label
+{
+    color: #c5b500
+}
+
+.star-widget input:checked ~ label {
+    color: #c5b500;
+}
+
+.star-widget input#rate-3:checked ~ label,
+.star-widget input#rate-4:checked ~ label {
+    color: #c5b500;
+    text-shadow: 0 0 10px #a82;
+}
+
+.star-widget input#rate-5:checked ~ label {
+    color: #db5;
+    text-shadow: 0 0 15px #972;
+}
+
+.rating-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.rating-container form .rating-textarea {
+    overflow: hidden;
+}
+
+.rating-container form .rating-textarea textarea {
+    width: 500px;
+    height: 150px;
+    resize: none;
+}
+
+.rating-container h2 {
+    color: #98142e;
+    font-weight: 600;
+    font-size: 2rem;
+    text-align: center;
+}
+
+.rating-button button {
+    background: #98142e;
+    padding: 1rem;
+    font-size: 1.2rem;
+    border: .1rem solid #444;
+    text-align: center;
+    cursor: pointer;
+    color: #fff;
+    width: 100px;
+    margin-top: 10px;
+}
+
+.rating-button button:hover {
+    background: #691426;
+}
+
+/* admin */
 
 .admin-action:hover {
     color: red;
@@ -956,6 +1068,11 @@ span.price {
     .cart-total {
         margin-left: 0;
         margin-bottom: 20px;
+    }
+
+    .half-star {
+        right: 8px;    
+        width: 8px;
     }
 }
 
@@ -996,8 +1113,26 @@ span.price {
         min-width: 0;
     }
 
+    .rating-container {
+        min-width: 0;
+    }
+
     .dead-end {
         height: 0;
+    }
+
+    .rating-container form .rating-textarea textarea {
+        width: auto;
+        height: 99%;
+    }
+
+    .rating-container form .rating-textarea {
+        width: auto;
+    }
+
+    .half-star {
+        right: 8px;    
+        width: 8px;
     }
 }
 
