@@ -78,6 +78,7 @@
         </div>
         <div class = "rating-container">
         {% if is_logged %}
+        {% if not rate_posted %}
             <h2>Oceń produkt</h2>
             <form method="POST">
                 <div class="star-widget"> 
@@ -100,6 +101,9 @@
                     <button name="submit-rate" type="submit">Post</button>
                 </div>
             </form>
+        {% else %}
+        Dziękujemy za twoją opinię.
+        {% endif %}
         {% else %}
         Musisz być zalaogowany, że dodać ocenę!
         {% endif %}

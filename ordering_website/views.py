@@ -230,6 +230,12 @@ def wine_page(request, wine_id):
     decimal_part = mean_rate - math.floor(mean_rate)
 
     rate = 0
+    rate_posted = False
+    
+    if is_logged:
+        current_user_rate = Rating.objects.filter(author_id=logged_user.user_uid, wine_id=wine_id)
+        if current_user_rate:
+            rate_posted = True
 
     if "cart" not in request.session:
         print("New cart session")
@@ -273,6 +279,7 @@ def wine_page(request, wine_id):
         "rate_len": rate_len,
         "mean_rate": mean_rate,
         "decimal_part": decimal_part,
+        "rate_posted": rate_posted,
         "star_range": range(1,5 + 1)
     }
     return render(request, "ordering_website/wine_page.html", data)
