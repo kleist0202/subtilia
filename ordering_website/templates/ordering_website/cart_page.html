@@ -15,8 +15,8 @@
         {%endfor%}
         <h1>Shopping Cart</h1>
         <div class="products-cart">
-            <div class="products">
             {% if items_in_cart %}
+            <div class="products">
                 <form method="POST"> 
                 {% csrf_token %}
                 {% for product in whole_products %}

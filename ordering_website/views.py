@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .forms import CreateUserForm, LoginUserForm, AddWineForm
+from .forms import CreateUserForm, LoginUserForm, AddWineForm, RatingForm
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password
 from .models import Rating, User, Wine
@@ -234,6 +234,7 @@ def wine_page(request, wine_id):
 
     rate = 0
     rate_posted = False
+    form = RatingForm()
     
     if is_logged:
         current_user_rate = Rating.objects.filter(author_id=logged_user.user_uid, wine_id=wine_id)
@@ -261,17 +262,21 @@ def wine_page(request, wine_id):
                     else:
                         dic[str(id)] += qty
                         request.session["cart"] = dic
+                        return redirect("wine_page", wine_id)
 
             if "rate" in request.POST:
                 rate = request.POST["rate"]
 
             if rate:
-                desc = request.POST["rate-message"]
-                Rating.objects.update_or_create(wine_id=wine_id, author_id=logged_user.user_uid, rate=rate, description=desc)
-            return redirect("wine_page", wine_id)
+                form = RatingForm(request.POST)
+
+                if form.is_valid():
+                    desc = form.cleaned_data.get("description")
+                    # desc = request.POST["rate-message"]
+                    Rating.objects.update_or_create(wine_id=wine_id, author_id=logged_user.user_uid, rate=rate, description=desc)
+                    return redirect("wine_page", wine_id)
 
     items_in_cart = get_cart_items_number(request)
-    print(decimal_part)
 
     data = {
         "is_logged": is_logged,
@@ -284,6 +289,7 @@ def wine_page(request, wine_id):
         "decimal_part": decimal_part,
         "rate_posted": rate_posted,
         "rate_objs": wine_rates_objs,
+        "form": form,
         "star_range": range(1,5 + 1)
     }
     return render(request, "ordering_website/wine_page.html", data)

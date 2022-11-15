@@ -64,7 +64,7 @@ class Rating(models.Model):
     wine = models.ForeignKey(Wine, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     rate = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
-    description = models.CharField(max_length=500)
+    description = models.TextField(validators=[MaxLengthValidator(500)])
 
     def __str__(self):
         return self.rate_id

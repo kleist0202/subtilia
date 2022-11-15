@@ -95,8 +95,9 @@
                 </div>
                 {% csrf_token %}
                 <div class="rating-textarea">
-                    <textarea maxlength=500 name="rate-message" required></textarea>
+                    {{ form.description }}
                 </div>
+                <div><span class="error">{{ form.errors }}</span></diV>
                 <div class="rating-button">
                     <button name="submit-rate" type="submit">Wyślij</button>
                 </div>

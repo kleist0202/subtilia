@@ -100,3 +100,20 @@ class AddWineForm(ModelForm):
             "size",
             "in_stock",
         ]
+
+
+class RatingForm(ModelForm):
+    description = forms.CharField(
+        widget=forms.Textarea(
+            attrs={
+                "placeholder": "Twoja opinia",
+                "style": "resize: none",
+            }
+        ),
+    )
+
+    class Meta:
+        model = Wine
+        fields = [
+            "description"
+        ]
