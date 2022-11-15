@@ -220,7 +220,7 @@ def wine_page(request, wine_id):
     chosen_wine = Wine.objects.get(pk=wine_id)
 
     # wine_rates = [rating.rate for rating in Rating.objects.filter(author_id=logged_user.user_uid, wine_id=wine_id) ]
-    wine_rates_objs = [rating for rating in Rating.objects.select_related('author').filter(wine_id=wine_id) ]
+    wine_rates_objs = [rating for rating in Rating.objects.select_related('author').filter(wine_id=wine_id) ][0:5]
     wine_rates_values = [rating.rate for rating in wine_rates_objs ]
 
     rate_len = len(wine_rates_values)
@@ -235,7 +235,7 @@ def wine_page(request, wine_id):
     rate = 0
     rate_posted = False
     form = RatingForm()
-    
+
     if is_logged:
         current_user_rate = Rating.objects.filter(author_id=logged_user.user_uid, wine_id=wine_id)
         if current_user_rate:
