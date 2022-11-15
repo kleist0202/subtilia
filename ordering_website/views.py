@@ -16,8 +16,9 @@ def home(request):
     rating_dict = {}
 
     wines = Wine.objects.all()
+
     for wine in wines:
-        wine_rates = [rating.rate for rating in Rating.objects.filter(author_id=logged_user.user_uid, wine_id=wine.wine_id) ]
+        wine_rates = [rating.rate for rating in Rating.objects.filter(wine_id=wine.wine_id) ]
 
         rate_len = len(wine_rates)
         if rate_len:
@@ -214,16 +215,18 @@ def remove_from_cart(request, wine_id):
 
 def wine_page(request, wine_id):
     logged_user, is_logged = get_user(request)
-    print(logged_user)
     is_admin = check_if_admin(logged_user)
 
     chosen_wine = Wine.objects.get(pk=wine_id)
 
-    wine_rates = [rating.rate for rating in Rating.objects.filter(author_id=logged_user.user_uid, wine_id=wine_id) ]
+    # wine_rates = [rating.rate for rating in Rating.objects.filter(author_id=logged_user.user_uid, wine_id=wine_id) ]
+    wine_rates_objs = [rating for rating in Rating.objects.select_related('author').filter(wine_id=wine_id) ]
+    wine_rates_values = [rating.rate for rating in wine_rates_objs ]
 
-    rate_len = len(wine_rates)
+    rate_len = len(wine_rates_values)
+    print(wine_rates_values)
     if rate_len:
-        mean_rate = sum(wine_rates) / rate_len
+        mean_rate = sum(wine_rates_values) / rate_len
     else:
         mean_rate = 0
     mean_rate = round(mean_rate, 1)
@@ -280,6 +283,7 @@ def wine_page(request, wine_id):
         "mean_rate": mean_rate,
         "decimal_part": decimal_part,
         "rate_posted": rate_posted,
+        "rate_objs": wine_rates_objs,
         "star_range": range(1,5 + 1)
     }
     return render(request, "ordering_website/wine_page.html", data)

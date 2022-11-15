@@ -95,10 +95,10 @@
                 </div>
                 {% csrf_token %}
                 <div class="rating-textarea">
-                    <textarea name="rate-message"></textarea>
+                    <textarea maxlength=500 name="rate-message" required></textarea>
                 </div>
                 <div class="rating-button">
-                    <button name="submit-rate" type="submit">Post</button>
+                    <button name="submit-rate" type="submit">Wyślij</button>
                 </div>
             </form>
         {% else %}
@@ -107,6 +107,30 @@
         {% else %}
         Musisz być zalaogowany, że dodać ocenę!
         {% endif %}
+        </div>
+        <div class="ratings-container">
+            <h1>Opinie</h1>
+            {% for rate in rate_objs %}
+            <div class="opinion">
+                {% if rate.author.name and rate.author.surname %}
+                <h2>{{ rate.author.name }} {{ rate.author.surname }}</h2>
+                {% else %}
+                <h2>Gość</h2>
+                {% endif %}
+                <div class ="stars">
+                    {% for x in star_range %}
+                        {% if x < rate.rate|add:1 %}
+                            <i class="fa fa-star yellow-star"></i>
+                        {% else %}
+                        <i class="fa fa-star gray-star">
+                        </i>
+                        {% endif %}
+                    {%endfor%}
+                    <span>({{ rate.rate }})</span>
+                </div>
+                <p>{{ rate.description }}</p>
+            </div>
+            {% endfor %}
         </div>
     </div>
 
