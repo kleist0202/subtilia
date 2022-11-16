@@ -15,6 +15,7 @@ urlpatterns = [
     path('wine_page/<int:wine_id>/', views.wine_page, name="wine_page"),
     path('add_wine_page', views.add_wine_page, name="add_wine_page"),
     path('update_wine_page/<int:wine_id>/', views.update_wine_page, name="update_wine_page"),
+    path('load/<int:wine_id>/', views.load_more, name="load"),
 ]
 
 if settings.DEBUG:

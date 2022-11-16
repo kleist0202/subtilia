@@ -111,9 +111,10 @@
         </div>
         <div class="ratings-container">
             <h1>Opinie</h1>
+            <div id="ratings-container">
             {% for rate in rate_objs %}
             <div class="opinion">
-                {% if rate.author.name and rate.author.surname %}
+                {% if rate.author.name or rate.author.surname %}
                 <h2>{{ rate.author.name }} {{ rate.author.surname }}</h2>
                 {% else %}
                 <h2>Gość</h2>
@@ -132,9 +133,19 @@
                 <p>{{ rate.description }}</p>
             </div>
             {% endfor %}
+            </div>
+            <div class="more-opinions-container">
+                <button id="btn" type="button" class="more-opinions-btn">Zobacz więcej opinii</button>
+            </div>
         </div>
     </div>
 
 </div>
+{{total_obj|json_script:"json-total"}}
+<script>
+    let load_url = "{% url 'load' wine.wine_id %}"
+</script>
+<script src="{% static 'js/load.js' %}" type="text/javascript">
+</script>
 
 {% endblock %}

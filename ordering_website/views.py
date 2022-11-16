@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from .forms import CreateUserForm, LoginUserForm, AddWineForm, RatingForm
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password
@@ -138,7 +138,6 @@ def cart_page(request):
     logged_user, is_logged = get_user(request)
     is_admin = check_if_admin(logged_user)
 
-    cart_products = []
     whole_products = []
     total_price = 0
     sum_price = 0
@@ -219,7 +218,6 @@ def wine_page(request, wine_id):
 
     chosen_wine = Wine.objects.get(pk=wine_id)
 
-    # wine_rates = [rating.rate for rating in Rating.objects.filter(author_id=logged_user.user_uid, wine_id=wine_id) ]
     wine_rates_objs = [rating for rating in Rating.objects.select_related('author').filter(wine_id=wine_id) ][0:5]
     wine_rates_values = [rating.rate for rating in wine_rates_objs ]
 
@@ -277,6 +275,7 @@ def wine_page(request, wine_id):
                     return redirect("wine_page", wine_id)
 
     items_in_cart = get_cart_items_number(request)
+    total_obj = Rating.objects.filter(wine_id=wine_id).count()
 
     data = {
         "is_logged": is_logged,
@@ -289,10 +288,22 @@ def wine_page(request, wine_id):
         "decimal_part": decimal_part,
         "rate_posted": rate_posted,
         "rate_objs": wine_rates_objs,
+        "total_obj": total_obj,
         "form": form,
         "star_range": range(1,5 + 1)
     }
     return render(request, "ordering_website/wine_page.html", data)
+
+
+def load_more(request, wine_id):
+    loaded_items = int(request.GET.get('loaded_items'))
+    limit = 5
+    rate_objs = list(
+        Rating.objects.select_related('author')
+        .filter(wine_id=wine_id)
+        .values("rate", "description", "author__name", "author__surname")[loaded_items:loaded_items + limit])
+    data = {'rate_objs': rate_objs}
+    return JsonResponse(data=data)
 
 
 def add_wine_page(request):
@@ -308,7 +319,6 @@ def add_wine_page(request):
         form = AddWineForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            current_wine = form.cleaned_data.get("wine")
             messages.success(request, "Wine was created successfully", extra_tags="wine_created")
             return redirect("add_wine_page")
     else:
@@ -384,5 +394,3 @@ def get_cart_items_number(request):
     for _, k in request.session["cart"].items():
         items += k
     return items
-
-
