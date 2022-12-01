@@ -11,8 +11,8 @@ class Ranks(models.TextChoices):
 
 class User(models.Model):
     user_uid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(default='', unique=True, max_length=255, null=True)
-    surname = models.CharField(default='', unique=True, max_length=255, null=True)
+    name = models.CharField(default='', max_length=255, null=True)
+    surname = models.CharField(default='', max_length=255, null=True)
     email = models.CharField(unique=True, max_length=255)
     password = models.CharField(unique=True, max_length=255)
     city = models.CharField(default='', max_length=255, null=True)
