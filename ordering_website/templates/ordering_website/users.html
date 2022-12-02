@@ -1,0 +1,78 @@
+{% extends 'ordering_website/home.html' %}
+
+{% block content %}
+
+{% load static %}
+{% load ordering_website_extras %}
+
+<div class="mainContent">
+
+    <div class="container">
+        <h1>Użytkownicy</h1>
+        {%for message in messages %}
+            {%if "too_much" in message.tags %}
+                <span class="{{ message.tags }}">{{ message }}</span>
+            {%endif%}
+        {%endfor%}
+        {%for user in users%}
+        <div class="post">
+            <div class="postHead">
+                <div class="mainInfoUsers">
+                    <div>
+                        <span class="textInfo">
+                            {% if user.rank == "admin" %}
+                            <span class="admin-color">
+                            {% else %}
+                            <span>
+                            {% endif %}
+                            {% if user.name or user.surname %}
+                            {{ user.name }} {{ user.surname }}
+                            {% else %}
+                            Gość
+                            {% endif %}
+                            </span>
+                        </span>
+                    </div>
+                </div>
+                {% if user.rank == "user" %}
+                <a href="{% url 'switch_admin_user' user.user_uid %}" class="change-to to-admin">
+                    <i class="fa fa-arrow-up"></i>
+                    <span>Ustaw jako admin</span>
+                </a>
+                {% else %}
+                <a href="{% url 'switch_admin_user' user.user_uid %}" class="change-to to-user">
+                    <i class="fa fa-arrow-down"></i>
+                    <span>Ustaw jako user</span>
+                </a>
+                {% endif %}
+                <div class="sideInfo">
+                    <div>
+                        <table>
+                        <tr>
+                            <td class="italic-text">Czas rejestracji:</td>
+                            <td>{{ user.registration_time}}</td>
+                        </tr>
+                        <tr>
+                            <td class="italic-text">Ranga:</td>
+                            {% if user.rank == "admin" %}
+                            <td class="admin-color">{{ user.rank }}</td>
+                            {% else %}
+                            <td>{{ user.rank }}</td>
+                            {% endif %}
+                        </tr>
+                        </table>
+
+                    </div>
+                </div>
+                <a href="{% url 'remove_user' user.user_uid %}" class="remove-user">
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+                    <span>Usuń użytkownika</span>
+                </a>
+            </div>
+        </div>
+        {%endfor%}
+    </div>
+
+</div>
+
+{% endblock %}

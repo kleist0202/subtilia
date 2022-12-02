@@ -48,7 +48,7 @@
             <div class="sold">Wyprzedane</div>
             {% else %}
             <div class="buttons">
-                <a href="#" class="buy">Kup teraz</a>
+                <a href="{% url 'checkout_page' %}" class="buy">Kup teraz</a>
                 <a href="{% url 'add_to_cart' wine.wine_id %}" class="cart">Dodaj to koszyka <i class="fa fa-shopping-cart"></i></a>
             </div>
             {% endif %}

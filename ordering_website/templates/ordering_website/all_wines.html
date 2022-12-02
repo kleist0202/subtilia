@@ -1,0 +1,46 @@
+{% extends 'ordering_website/home.html' %}
+
+{% block content %}
+
+{% load static %}
+{% load ordering_website_extras %}
+
+<div class="mainContent">
+
+    <div class="container">
+        <h1>Wina</h1>
+        {%for message in messages %}
+            {%if "too_much" in message.tags %}
+                <span class="{{ message.tags }}">{{ message }}</span>
+            {%endif%}
+        {%endfor%}
+        <div class="products-cart">
+        <div class="products">
+        {%for wine in wines %}
+        <div class="product">
+            <a class="img-link" href="{% url 'wine_page' wine.wine_id %}"><img class="product-img" src="{{ wine.image.url }}" alt="{{ wine.name }}'s image" /></a>
+            <div class="product-info">
+                <h3 class="product-name">{{ wine.name }}</h3>
+                <h4 class="product-price">{{ wine.price }}zł</h4>
+                <p class="product-quantity">
+                    Ilość:
+                    {{ wine.in_stock }}
+                </p>
+                <a href="{% url 'remove_wine' wine.wine_id %}" class="for-all-wines remove-wine-pos">
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+                    <span>Usuń wino</span>
+                </a>
+                <a href="{% url 'update_wine_page' wine.wine_id %}" class="for-all-wines update-wine-pos">
+                    <i class="fa fa-refresh" aria-hidden="true"></i>
+                    <span>Zaktualizuj wino</span>
+                </a>
+            </div>
+        </div>
+        {%endfor%}
+        </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

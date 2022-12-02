@@ -139,7 +139,6 @@ def cart_page(request):
     is_admin = check_if_admin(logged_user)
 
     whole_products = []
-    total_price = 0
     sum_price = 0
 
     qty = 1
@@ -162,8 +161,6 @@ def cart_page(request):
             whole_products.append([wine, dic[str(id)], price])
             sum_price += price
 
-    total_price = round(float(sum_price) + 9.99, 2)
-
     items_in_cart = get_cart_items_number(request)
 
     data = {
@@ -171,7 +168,6 @@ def cart_page(request):
         "whole_products": whole_products,
         "items_in_cart": items_in_cart,
         "sum_price": sum_price,
-        "total_price": total_price,
         "is_admin": is_admin,
         "logged_user": logged_user,
     }
@@ -301,7 +297,7 @@ def load_more(request, wine_id):
     rate_objs = list(
         Rating.objects.select_related('author')
         .filter(wine_id=wine_id)
-        .values("rate", "description", "author__name", "author__surname")[loaded_items:loaded_items + limit])
+        .values("rate", "wine_id", "description", "author_id", "author__name", "author__surname")[loaded_items:loaded_items + limit])
     data = {'rate_objs': rate_objs}
     return JsonResponse(data=data)
 
@@ -362,6 +358,149 @@ def update_wine_page(request, wine_id):
         "logged_user": logged_user,
     }
     return render(request, "ordering_website/update_wine_page.html", data)
+
+
+def checkout_page(request):
+    logged_user, is_logged = get_user(request)
+    is_admin = check_if_admin(logged_user)
+    sum_price = 0
+    total_price = 0
+    whole_products = []
+
+    items_in_cart = get_cart_items_number(request)
+
+    if "cart" in request.session:
+        for id, qty in request.session["cart"].items():
+            wine = Wine.objects.get(pk=id)
+
+            dic = request.session["cart"]
+
+            if request.method == "POST":
+                qty = int(request.POST["product_" + str(id)])
+                if qty > wine.in_stock:
+                    messages.error(request, "Podana liczba przekracza dostępną ilość produktu!", extra_tags='too_much')
+                else:
+                    dic[str(id)] = qty
+                    request.session["cart"] = dic
+
+            price = dic[str(id)] * float(wine.price)
+            whole_products.append([wine, dic[str(id)], price, qty])
+            sum_price += price
+
+    total_price = round(float(sum_price) + 9.99, 2)
+
+    data = {
+        "is_logged": is_logged,
+        "is_admin": is_admin,
+        "items_in_cart": items_in_cart,
+        "total_price": total_price,
+        "whole_products": whole_products,
+        "sum_price": sum_price,
+        "logged_user": logged_user,
+    }
+    return render(request, "ordering_website/checkout_page.html", data)
+
+
+def users(request):
+    logged_user, is_logged = get_user(request)
+    is_admin = check_if_admin(logged_user)
+
+    items_in_cart = get_cart_items_number(request)
+
+    if not is_admin:
+        return redirect("home")
+
+    users = User.objects.exclude(user_uid__in=[logged_user.user_uid]).order_by('-registration_time')
+
+    data = {
+        "is_logged": is_logged,
+        "is_admin": is_admin,
+        "logged_user": logged_user,
+        "items_in_cart": items_in_cart,
+        "users": users,
+    }
+    return render(request, "ordering_website/users.html", data)
+
+
+def remove_user(request, user_uid):
+    logged_user, _ = get_user(request)
+    is_admin = check_if_admin(logged_user)
+
+    if not is_admin:
+        return redirect("home")
+
+    user_to_remove = User.objects.get(user_uid=user_uid)
+    user_to_remove.delete()
+
+    return redirect("users")
+
+
+def remove_wine(request, wine_id):
+    logged_user, _ = get_user(request)
+    is_admin = check_if_admin(logged_user)
+
+    if not is_admin:
+        return redirect("home")
+
+    wine_to_remove = Wine.objects.get(pk=wine_id)
+    wine_to_remove.delete()
+
+    return redirect("all_wines")
+
+
+def switch_admin_user(request, user_uid):
+    logged_user, _ = get_user(request)
+    is_admin = check_if_admin(logged_user)
+
+    if not is_admin:
+        return redirect("home")
+
+    chosen_user = User.objects.get(pk=user_uid)
+
+    if chosen_user.rank == "admin":
+        chosen_user.rank = "user"
+    else:
+        chosen_user.rank = "admin"
+
+    chosen_user.save(update_fields=["rank"])
+
+    return redirect("users")
+
+
+def all_wines(request):
+    logged_user, is_logged = get_user(request)
+    is_admin = check_if_admin(logged_user)
+
+    items_in_cart = get_cart_items_number(request)
+
+    if not is_admin:
+        return redirect("home")
+
+    wines = Wine.objects.all().order_by('-name')
+
+    data = {
+        "is_logged": is_logged,
+        "is_admin": is_admin,
+        "logged_user": logged_user,
+        "items_in_cart": items_in_cart,
+        "wines": wines,
+    }
+    return render(request, "ordering_website/all_wines.html", data)
+
+
+def remove_opinion(request, wine_id, user_uid):
+    logged_user, is_logged = get_user(request)
+    is_admin = check_if_admin(logged_user)
+
+    if not is_admin:
+        return redirect("home")
+
+    wine = Wine.objects.get(pk=wine_id)
+    user = User.objects.get(pk=user_uid)
+    opinion = Rating.objects.filter(wine=wine, author=user)
+    opinion.delete()
+
+    return redirect("wine_page", wine_id)
 
 
 # ------------------ useful functions ---------------------

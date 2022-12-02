@@ -45,24 +45,16 @@
                 </div>
                 </form>
             </div>
-            <div class="cart-total">
+            <div class="cart-total flex-25 height-15rem">
                 <p>
                     <span>Koszt produktów</span>
                     <span>{{ sum_price }}</span>
                 </p>
                 <p>
-                    <span>Number of items</span>
+                    <span>Liczba produktów</span>
                     <span>{{ items_in_cart }}</span>
                 </p>
-                <p>
-                    <span>Dostawa</span>
-                    <span>9.99</span>
-                </p>
-                <p>
-                    <span>Razem z dostawą</span>
-                    <span>{{ total_price }}</span>
-                </p>
-                <a href="#">Przejdź do kasy</a>
+                <a href="{% url 'checkout_page' %}">Przejdź do kasy</a>
             </div>
             {% else %}
                 <span>W koszyku nie ma żadnych produktów.</span>

@@ -27,6 +27,15 @@ body {
     background: #f1f1f1;
 }
 
+a {
+    color: #2196F3;
+}
+
+hr {
+    border: 1px solid lightgrey;
+}
+
+
 .mainContent {
     min-height: 85.3vh;
     position: relative;
@@ -323,7 +332,6 @@ body {
     padding: 10px;
     border-radius: 8px;
     border: 2px solid #bbbbbb;
-    margin-top: 10px;
     margin-bottom: 10px;
     margin-left: auto;
     margin-right: auto;
@@ -340,7 +348,7 @@ body {
     top: 20px;
 }
 
-/* checkout page */
+/* cart page */
 
 * {
   box-sizing: border-box;
@@ -393,6 +401,14 @@ body {
     border-radius: 3px;
 }
 
+.col-50 input[type=email] {
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 12px;
+    border: 1px solid #bbb;
+    border-radius: 3px;
+}
+
 .col-50 input[type=file] {
     width: 100%;
     margin-bottom: 20px;
@@ -431,14 +447,6 @@ label {
 
 .btn:hover {
     background-color: #444444;
-}
-
-a {
-    color: #2196F3;
-}
-
-hr {
-    border: 1px solid lightgrey;
 }
 
 span.price {
@@ -768,14 +776,20 @@ span.price {
     background-color: var(--wine-red-color);
 }
 
-.cart-total {
+.flex-25 {
     flex: 0.25;
+}
+
+.cart-total {
     margin-left: 20px;
     padding: 20px;
-    height: 20rem;
     border: 1px solid #aaa;
     border-radius: 5px;
     background: #fff;
+}
+
+.height-15rem {
+    height: 15rem;
 }
 
 .cart-total p {
@@ -940,6 +954,25 @@ span.price {
     background-color: var(--dark-red-color);
 }
 
+.remove-button {
+    font-size: 1.2rem;
+    background-color: var(--wine-red-color);
+    border:1px solid var(--dark-red-color);
+    color:#fff;
+    margin-left: 10px;
+    padding: 4px 4px;
+    text-decoration: none;
+    position: absolute;
+    width: 8rem;
+    text-align: center;
+    top: 0px;
+    right: 10px;
+}
+
+.remove-button:hover {
+    background-color: var(--dark-red-color);
+}
+
 /* rating */
 
 .rating-container {
@@ -1074,6 +1107,7 @@ span.price {
     border-bottom-color: #a7a6a7;
     word-wrap: break-word;
     height: auto;
+    position: relative;
 }
 
 .more-opinions-container {
@@ -1093,7 +1127,7 @@ span.price {
     width: 15rem;
     margin-top: 20px;
 }
-
+user-
 .more-opinions-btn:focus, more-opinions-btn:active{
     background: var(--wine-red-color);
     color: white; 
@@ -1103,9 +1137,213 @@ span.price {
     background: var(--dark-red-color);
 }
 
+/* checkout_page */
+
+.choose-method input {
+    display: none;
+}
+
+.choose-method label {
+    border: 1px solid lightgrey;
+    width: 200px;
+    font-size: 1.2rem;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.choose-method input[type=radio]:checked+label {
+    color: #fff;
+    background: var(--wine-red-color);
+    border-color: var(--dark-red-color);
+}
+
+.more-height {
+    height: 25rem;
+}
+
+.bought-items {
+    margin-top: 10px;
+}
+
+.summary-items {
+    display: flex;
+    flex-direction: column;
+    flex: 0.25;
+}
+
+.summary-product {
+    display: flex;
+    width: 100%;
+    height: 20rem;
+    overflow: hidden;
+    margin-bottom: 20px;
+    background: #fff;
+
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: #a7a6a7;
+}
+
+.summary-product a.img-link {
+    background-color: #fff;
+    width: 15rem;
+    height: auto;
+}
+
+.summary-product .product-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.summary-product .product-img:hover {
+    transform: scale(.9);
+}
+
+/* users */
+
+.postHead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.postHead hr{
+    width: inherit;
+}
+
+.mainInfoUsers {
+    width: 40%;
+}
+
+.textInfo {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.sideInfo {
+    margin-left: 10px;
+}
+
+.sideInfo dl{
+    display: flex;
+    font-weight: bold;
+    font-size: 1.0rem;
+}
+
+.sideInfo tr{
+    font-weight: bold;
+    font-size: 1.0rem;
+}
+
+.sideInfo td{
+    display:inline-table;
+    margin-left: 10px;
+}
+
+.post {
+    align-items: center;
+    background-color: white;
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px solid #bbbbbb;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.remove-user {
+    padding: 10px 25px;
+    background-color: #f6e8ea;
+    color: var(--wine-red-color);
+    cursor: pointer;
+    border-radius: 5px;
+    text-decoration: none;
+    position: relative;
+    border-color: var(--dark-red-color)
+}
+
+.remove-user i {
+    margin-right: 5px;
+}
+
+.remove-user:hover {
+    color: #f6e8ea;
+    background-color: var(--wine-red-color);
+}
+
+.change-to {
+    padding: 10px 25px;
+    background-color: white;
+    color: black;
+    cursor: pointer;
+    border-radius: 5px;
+    text-decoration: none;
+    position: relative;
+    border: 2px solid #222;
+}
+
+.to-admin:hover {
+    color: #f6e8ea;
+    background-color: #c00;
+}
+
+.to-user:hover {
+    color: #f6e8ea;
+    background-color: #0c0;
+}
+
+
+.italic-text {
+    font-style: italic;
+    font-size: 1.1rem;
+}
+
+/* all_wines */
+
+.for-all-wines {
+    padding: 10px 25px;
+    background-color: #f6e8ea;
+    color: var(--wine-red-color);
+    cursor: pointer;
+    border-radius: 5px;
+    text-decoration: none;
+    position: relative;
+    border-color: var(--dark-red-color);
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+}
+
+.for-all-wines i {
+    margin-right: 5px;
+}
+
+.for-all-wines:hover {
+    color: #f6e8ea;
+    background-color: var(--wine-red-color);
+}
+
+.remove-wine-pos {
+    right: 20px;
+    bottom: 20px;
+}
+
+.update-wine-pos {
+    right: 20px;
+    bottom: 70px;
+}
+
 /* admin */
 
 .admin-action:hover {
+    color: red;
+}
+
+.admin-color {
     color: red;
 }
 
@@ -1129,12 +1367,12 @@ span.price {
 /* overall */
 
 .not-visible {
-        display: none;
+    display: none;
 }
 
 @media (max-width:1100px) {
     html {
-        font-size: 60%;
+        font-size: 65%;
     }
     .circle {
         width: 14px;
@@ -1150,6 +1388,11 @@ span.price {
     .cart-total {
         margin-left: 0;
         margin-bottom: 20px;
+        height: 30rem;
+    }
+    
+    .bought-items {
+        height: auto;
     }
 
     .half-star {

@@ -18,13 +18,16 @@ function loadmorePost() {
         success: function (response) {
             const data = response.rate_objs
             data.map(rate => {
+                var url = remove_url.replace('00000000-0000-0000-0000-000000000000', rate.author_id)
                 var content = ""
                 if (rate.author__name || rate.author__surname) {
-                    content += '<div class="opinion"><h2>' + rate.author__name + ' ' + rate.author__surname + '</h2><div class ="stars">'
+                    content += '<div class="opinion"><h2>' + rate.author__name + ' ' + rate.author__surname + '</h2>'
                 }
                 else {
                 content += '<div class="opinion"><h2>Gość</h2>'
                 }
+                content += '<div class ="stars">'
+                content += '<a class="remove-button admin-action" href="' + url + '">Usuń</a></h2>'
                 for (let x = 1; x < 5 + 1; x++) {
                     if (x < rate.rate + 1)
                         content += '<i class="fa fa-star yellow-star"></i> '

@@ -16,6 +16,13 @@ urlpatterns = [
     path('add_wine_page', views.add_wine_page, name="add_wine_page"),
     path('update_wine_page/<int:wine_id>/', views.update_wine_page, name="update_wine_page"),
     path('load/<int:wine_id>/', views.load_more, name="load"),
+    path('checkout_page', views.checkout_page, name="checkout_page"),
+    path('users', views.users, name="users"),
+    path('all_wines', views.all_wines, name="all_wines"),
+    path('remove_user/<uuid:user_uid>/', views.remove_user, name="remove_user"),
+    path('switch_admin_user/<uuid:user_uid>/', views.switch_admin_user, name="switch_admin_user"),
+    path('remove_wine/<int:wine_id>/', views.remove_wine, name="remove_wine"),
+    path('remove_opinion/<int:wine_id>/<uuid:user_uid>', views.remove_opinion, name="remove_opinion"),
 ]
 
 if settings.DEBUG:

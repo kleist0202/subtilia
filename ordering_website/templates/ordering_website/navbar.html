@@ -11,6 +11,8 @@
             <li><a class="menuItem" href="{% url 'profile' %}">Profil</a></li>
             {% if is_admin %}
             <li><a class="menuItem admin-action" href="{% url 'add_wine_page' %}">Dodaj wino</a></li>
+            <li><a class="menuItem admin-action" href="{% url 'users' %}">Użytkownicy</a></li>
+            <li><a class="menuItem admin-action" href="{% url 'all_wines' %}">Wina</a></li>
             {% endif %}
             {% endif %}
         </ul>

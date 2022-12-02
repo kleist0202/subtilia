@@ -1,0 +1,121 @@
+{% extends 'ordering_website/home.html' %}
+
+{% block content %}
+
+{% load static %}
+{% load ordering_website_extras %}
+
+<div class="mainContent">
+
+    <div class="container">
+        {%for message in messages %}
+            {%if "too_much" in message.tags %}
+                <span class="{{ message.tags }}">{{ message }}</span>
+            {%endif%}
+        {%endfor%}
+        <h1>Dostawa i płatność</h1>
+        <div class="products-cart">
+            <div class="products">
+                <div class = "profile_frame">
+                    <h1>Dostawa</h1>
+                    <div class="choose-method"> 
+                        <input type="radio" value="1" name="delivery" id="delivery-1">
+                        <label for="delivery-1" class="">Paczkomat</label>
+                        <input type="radio" value="2" name="delivery" id="delivery-2">
+                        <label for="delivery-2" class="">Pocztą</label>
+                    </div> 
+                    <h1>Płatność</h1>
+                    <div class="choose-method"> 
+                        <input type="radio" value="1" name="payment" id="payment-1">
+                        <label for="payment-1" class="">Przelew</label>
+                        <input type="radio" value="2" name="payment" id="payment-2">
+                        <label for="payment-2" class="">Blik</label>
+                    </div> 
+                    <h1>Dane</h1>
+                    <form method="POST">
+                    {% csrf_token %}
+                  
+                    <div class="row">
+                        <div class="col-50">
+                            <label for="email"><i class="fa fa-at"></i> Adres email</label>
+                            <input type="email" id="emial" name="email" maxlength="255" placeholder="przyklad@emailu.com" value="{{ logged_user.email }}">
+                            <div class="row">
+                                <div class="col-50">
+                                    <label for="name">Imię</label>
+                                    <input type="text" id="name" name="name" maxlength="255" placeholder="Jan" value="{{ logged_user.name }}">
+                                </div>
+                                <div class="col-50">
+                                    <label for="surname">Nazwisko</label>
+                                    <input type="text" id="surname" name="surname" maxlength="255" placeholder="Kowalski" value="{{ logged_user.surname }}">
+                                </div>
+                            </div>
+                            <label for="adr"><i class="fa fa-address-card-o"></i> Adres i numer</label>
+                            <input type="text" id="adr" name="adr" pattern="^[a-zA-Z]+?\s\w+$" maxlength="255" placeholder="Sezamkowa 1" value="{{ logged_user.address_and_number }}">
+                            <label for="phone"><i class="fa fa-phone"></i> Numer telefonu</label>
+                            <input type="text" id="phone" name="phone" pattern="[0-9]{9}" maxlength="9" pattern="^\+?1?\d{9,9}$" placeholder="999999999" value="{{ logged_user.phone_number }}">
+
+                            <div class="row">
+                                <div class="col-50">
+                                    <label for="city"><i class="fa fa-institution"></i> Miasto</label>
+                                    <input type="text" id="city" name="city" maxlength="255"  placeholder="Warszawa" value="{{ logged_user.city }}">
+                                </div>
+                                <div class="col-50">
+                                    <label for="zip"><i class="fa fa-envelope"></i> Kod pocztowy</label>
+                                    <input type="text" id="zip" name="zip" pattern="\d{2}-\d{3}" maxlength="6" placeholder="99-999" value="{{ logged_user.zip_code }}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% for message in messages %}
+                    <span class="{{ message.tags }}">{{ message }}</span>
+                    {% endfor %}
+                    </form>
+                </div>
+            </div>
+            <div class="summary-items">
+                <div class="cart-total more-height">
+                    <h1>Podsumowanie</h1>
+                    <p>
+                        <span>Koszt produktów</span>
+                        <span>{{ sum_price }}</span>
+                    </p>
+                    <p>
+                        <span>Liczba produktów</span>
+                        <span>{{ items_in_cart }}</span>
+                    </p>
+                    <p>
+                        <span>Dostawa</span>
+                        <span>9.99</span>
+                    </p>
+                    <p>
+                        <span>Razem z dostawą</span>
+                        <span>{{ total_price }}</span>
+                    </p>
+                    <a href="{% url 'checkout_page' %}">Złóż zamówienie</a>
+                </div>
+                <div class="cart-total bought-items">
+                    {% for product in whole_products %}
+                    <div class="summary-product">
+                        <a class="img-link" href="{% url 'wine_page' product.0.wine_id %}"><img class="product-img" src="{{ product.0.image.url }}" alt="{{ product.0.name }}'s image" /></a>
+                        <div class="product-info">
+                            <h3 class="product-name">{{ product.0.name }}</h3>
+                            <h4 class="product-price">{{ product.0.price }} zł</h4>
+                            <p class="product-quantity">
+                                <span>Ilość:
+                                {{ product.3 }}
+                                </span>
+                                <span>Razem:
+                                {{ product.2 }} zl
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
