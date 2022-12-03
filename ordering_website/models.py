@@ -150,3 +150,8 @@ class OrderedProduct(models.Model):
     order = models.ForeignKey(OrderData, on_delete=models.CASCADE)
     wine = models.ForeignKey(Wine, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(validators=[MinValueValidator(0), MaxValueValidator(1000)])
+    full_price = models.DecimalField(max_digits=12, decimal_places=2)
+
+    def save(self, *args, **kwargs):
+        self.full_price = self.quantity * self.wine.price
+        super().save(*args, **kwargs)

@@ -11,7 +11,7 @@
         <h1>Zamówienia</h1>
 
         {% for order in orders %}
-        <div class="post">
+        <div class="post" onclick="location.href='{% url 'check_order' order.order_id %}'" style="cursor:pointer">
             <div class="postHead">
                 <div class="mainInfoUsers">
                     <div>

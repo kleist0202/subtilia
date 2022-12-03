@@ -240,6 +240,7 @@ def wine_page(request, wine_id):
         request.session["cart"] = {}
 
     if "cart" in request.session:
+        print(Wine.objects.get(pk=wine_id).name)
         if request.method == "POST":
             if str(wine_id) not in request.session["cart"].keys():
                 request.session["cart"][str(wine_id)] = 0
@@ -572,6 +573,31 @@ def orders(request):
         "orders": orders,
     }
     return render(request, "ordering_website/orders.html", data)
+
+
+def check_order(request, order_id):
+    logged_user, is_logged = get_user(request)
+    is_admin = check_if_admin(logged_user)
+
+    items_in_cart = get_cart_items_number(request)
+
+    if not is_admin:
+        return redirect("home")
+
+    order = OrderData.objects.get(pk=order_id)
+    ordered_wines = OrderedProduct.objects.filter(order=order_id)
+    print(order.name)
+
+    data = {
+        "is_logged": is_logged,
+        "is_admin": is_admin,
+        "logged_user": logged_user,
+        "items_in_cart": items_in_cart,
+        "order": order,
+        "ordered_wines": ordered_wines
+    }
+
+    return render(request, "ordering_website/check_order.html", data)
 
 # ------------------ useful functions ---------------------
 

@@ -35,6 +35,12 @@ hr {
     border: 1px solid lightgrey;
 }
 
+.line{
+    padding: 20px 0;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: #a7a6a7;
+}
 
 .mainContent {
     min-height: 85.3vh;
@@ -799,6 +805,10 @@ span.price {
     font-size: 1.2rem;
 }
 
+.row-align-center{
+    text-align:center
+}
+
 .cart-total a {
     display: block;
     text-align: center;
@@ -1200,6 +1210,21 @@ user-
     transform: scale(.9);
 }
 
+.submit-order-button {
+    display: block;
+    text-align: center;
+    height: 40px;
+    width: 150px;
+    background-color: var(--wine-red-color);
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.submit-order-button:hover {
+    background-color: var(--dark-red-color);
+}
+
 /* users */
 
 .postHead {
@@ -1253,6 +1278,11 @@ user-
     margin-left: auto;
     margin-right: auto;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.post:hover {
+    border: 2px solid #555;
+    background-color: #ddd;
 }
 
 .remove-user {
@@ -1337,6 +1367,10 @@ user-
     bottom: 70px;
 }
 
+.whole-flex {
+    flex: 1;
+}
+
 /* admin */
 
 .admin-action:hover {
@@ -1362,6 +1396,22 @@ user-
     align-items: center;
     justify-content: center;
     box-shadow: 2px 2px 6px rgba(0, 0, 0, .4);
+}
+
+/* check_order */
+
+.order-data {
+    margin-left: 0px;
+}
+
+.order-data p {
+    color: #000;
+    font-weight: bold;
+}
+
+.order-data-part {
+    color: #f00;
+    font-weight: bold;
 }
 
 /* overall */
@@ -1410,6 +1460,10 @@ user-
 
     .product-content {
         min-width: 0;
+    }
+
+    .auto-height {
+        height: auto;
     }
 }
 

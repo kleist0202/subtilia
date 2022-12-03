@@ -1,0 +1,83 @@
+{% extends 'ordering_website/home.html' %}
+
+{% block content %}
+
+{% load static %}
+{% load ordering_website_extras %}
+
+<div class="mainContent">
+    <div class="container">
+        <h1>Dane zamawiającego</h1>
+        <div class="summary-items">
+            <div class="cart-total order-data auto-height">
+                <div class="row">
+                    <div class="col-50">
+                        <h2>Dane rozliczeniowe</h2>
+
+                        <div class="row">
+                            <div class="col-50">
+                                <p>Imię: </p>
+                                <span class="order-data-part">{{ order.name }}<span>
+                            </div>
+                            <div class="col-50">
+                                <p>Nazwisko: </p>
+                                <span class="order-data-part">{{ order.surname }}</span>
+                            </div>
+                        </div>
+                        <p>Ulica i numer: </p>
+                        <span class="order-data-part">{{ order.address_and_number }}</span>
+                        <p>Numer telefonu</p>
+                        <span class="order-data-part">{{ order.phone_number }}</span>
+                        <div class="row">
+                            <div class="col-50">
+                                <p>Miasto: </p>
+                                <span class="order-data-part">{{ order.city }}</span>
+                            </div>
+                            <div class="col-50">
+                                <p>Kod pocztowy: </p>
+                                <span class="order-data-part">{{ order.zip_code }}</span>
+                            </div>
+                        </div>
+                        <div class="line">
+                        </div>
+                        <div class="row row-align-center">
+                            <div class="col-25">
+                                <h2>Dostawa</h2>
+                                <span class="order-data-part">{{ order.delivery }}</span>
+                            </div>
+                            <div class="col-25">
+                                <h2>Płatność</h2>
+                                <span class="order-data-part">{{ order.payment }}</span>
+                            </div>
+                            <div class="col-25">
+                                <h2>Status</h2>
+                                <span class="order-data-part">{{ order.status }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="cart-total order-data bought-items">
+                {% for product in ordered_wines %}
+                <div class="summary-product">
+                    <a class="img-link" href="{% url 'wine_page' product.wine.wine_id %}"><img class="product-img" src="{{ product.wine.image.url }}" alt="{{ product.0.name }}'s image" /></a>
+                    <div class="product-info">
+                        <h3 class="product-name">{{ product.wine.name }}</h3>
+                        <h4 class="product-price">{{ product.wine.price }} zł</h4>
+                        <p class="product-quantity">
+                            <span>Ilość:
+                            {{ product.quantity }}
+                            </span>
+                            <span>Razem:
+                            {{ product.full_price }}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
