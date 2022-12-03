@@ -14,62 +14,61 @@
             {%endif%}
         {%endfor%}
         <h1>Dostawa i płatność</h1>
+        <form method="POST">
         <div class="products-cart">
             <div class="products">
                 <div class = "profile_frame">
+                    {% csrf_token %}
                     <h1>Dostawa</h1>
                     <div class="choose-method"> 
-                        <input type="radio" value="1" name="delivery" id="delivery-1">
+                        <input type="radio" value="parcel_locker" name="delivery" id="delivery-1">
                         <label for="delivery-1" class="">Paczkomat</label>
-                        <input type="radio" value="2" name="delivery" id="delivery-2">
+                        <input checked="checked" type="radio" value="courier" name="delivery" id="delivery-2">
                         <label for="delivery-2" class="">Kurier</label>
                     </div> 
                     <h1>Płatność</h1>
                     <div class="choose-method"> 
-                        <input type="radio" value="1" name="payment" id="payment-1">
+                        <input checked="checked" type="radio" value="transfer" name="payment" id="payment-1">
                         <label for="payment-1" class="">Przelew</label>
-                        <input type="radio" value="2" name="payment" id="payment-2">
-                        <label for="payment-2" class="">Blik</label>
+                        <input type="radio" value="paypal" name="payment" id="payment-2">
+                        <label for="payment-2" class="">Paypal</label>
                     </div> 
                     <h1>Dane</h1>
-                    <form method="POST">
-                    {% csrf_token %}
                   
                     <div class="row">
                         <div class="col-50">
-                            <label for="email"><i class="fa fa-at"></i> Adres email</label>
-                            <input type="email" id="emial" name="email" maxlength="255" placeholder="przyklad@emailu.com" value="{{ logged_user.email }}">
+                            <p><i class="fa fa-at"></i> Adres email</p>
+                            {{ form.email }}
                             <div class="row">
                                 <div class="col-50">
-                                    <label for="name">Imię</label>
-                                    <input type="text" id="name" name="name" maxlength="255" placeholder="Jan" value="{{ logged_user.name }}">
+                                    <p> Imię</p>
+                                    {{ form.name }}
                                 </div>
                                 <div class="col-50">
-                                    <label for="surname">Nazwisko</label>
-                                    <input type="text" id="surname" name="surname" maxlength="255" placeholder="Kowalski" value="{{ logged_user.surname }}">
+                                    <p> Nazwisko</p>
+                                    {{ form.surname }}
                                 </div>
                             </div>
-                            <label for="adr"><i class="fa fa-address-card-o"></i> Adres i numer</label>
-                            <input type="text" id="adr" name="adr" pattern="^[a-zA-Z]+?\s\w+$" maxlength="255" placeholder="Sezamkowa 1" value="{{ logged_user.address_and_number }}">
-                            <label for="phone"><i class="fa fa-phone"></i> Numer telefonu</label>
-                            <input type="text" id="phone" name="phone" pattern="[0-9]{9}" maxlength="9" pattern="^\+?1?\d{9,9}$" placeholder="999999999" value="{{ logged_user.phone_number }}">
+                            <p><i class="fa fa-address-card-o"></i> Ulica i numer</p>
+                            {{ form.address_and_number }}
+                            <p><i class="fa fa-phone"></i> Numer telefonu</p>
+                            {{ form.phone_number }}
 
                             <div class="row">
                                 <div class="col-50">
-                                    <label for="city"><i class="fa fa-institution"></i> Miasto</label>
-                                    <input type="text" id="city" name="city" maxlength="255"  placeholder="Warszawa" value="{{ logged_user.city }}">
+                                    <p><i class="fa fa-institution"></i> Miasto</p>
+                                    {{ form.city}}
                                 </div>
                                 <div class="col-50">
-                                    <label for="zip"><i class="fa fa-envelope"></i> Kod pocztowy</label>
-                                    <input type="text" id="zip" name="zip" pattern="\d{2}-\d{3}" maxlength="6" placeholder="99-999" value="{{ logged_user.zip_code }}">
+                                    <p><i class="fa fa-envelope"></i> Kod pocztowy</p>
+                                    {{ form.zip_code }}
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {% for message in messages %}
-                    <span class="{{ message.tags }}">{{ message }}</span>
-                    {% endfor %}
-                    </form>
+                    <div>
+                        <span class="error">{{ form.errors }}</span>
+                    </div>
                 </div>
             </div>
             <div class="summary-items">
@@ -91,7 +90,7 @@
                         <span>Razem z dostawą</span>
                         <span>{{ total_price }}</span>
                     </p>
-                    <a href="{% url 'checkout_page' %}">Złóż zamówienie</a>
+                    <button name="submit" type="submit" id="save_data">Złóż zamówienie</button>
                 </div>
                 <div class="cart-total bought-items">
                     {% for product in whole_products %}
@@ -114,6 +113,7 @@
                 </div>
             </div>
         </div>
+        </form>
     </div>
 
 </div>

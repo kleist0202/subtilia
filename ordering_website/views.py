@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
-from .forms import CreateUserForm, LoginUserForm, AddWineForm, RatingForm
+from .forms import CreateUserForm, LoginUserForm, AddWineForm, RatingForm, SubmitOrderForm
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password
-from .models import Rating, User, Wine
+from .models import OrderData, OrderedProduct, Rating, User, Wine
 import math
 
 
@@ -369,23 +369,72 @@ def checkout_page(request):
 
     items_in_cart = get_cart_items_number(request)
 
+    if not items_in_cart:
+        return redirect("home")
+
     if "cart" in request.session:
         for id, qty in request.session["cart"].items():
             wine = Wine.objects.get(pk=id)
 
             dic = request.session["cart"]
 
-            if request.method == "POST":
-                qty = int(request.POST["product_" + str(id)])
-                if qty > wine.in_stock:
-                    messages.error(request, "Podana liczba przekracza dostępną ilość produktu!", extra_tags='too_much')
-                else:
-                    dic[str(id)] = qty
-                    request.session["cart"] = dic
-
             price = dic[str(id)] * float(wine.price)
             whole_products.append([wine, dic[str(id)], price, qty])
             sum_price += price
+
+    if request.method == "POST":
+        form = SubmitOrderForm(request.POST)
+
+        if form.is_valid():
+            email = request.POST["email"]
+            name = request.POST["name"]
+            surname = request.POST["surname"]
+            adr = request.POST["address_and_number"]
+            phone = request.POST["phone_number"]
+            city = request.POST["city"]
+            zip = request.POST["zip_code"]
+            delivery = request.POST["delivery"]
+            payment = request.POST["payment"]
+            print(email, name, surname, adr, phone, city, zip, payment)
+
+            order = OrderData(
+                name=name,
+                surname=surname,
+                email=email,
+                city=city,
+                phone_number=phone,
+                zip_code=zip,
+                address_and_number=adr,
+                delivery=delivery,
+                payment=payment,
+            )
+            order.save()
+
+            # add bought products to database with order id
+            print([(id, qty) for id, qty in request.session["cart"].items()])
+            for id, qty in request.session["cart"].items():
+                wine = Wine.objects.get(pk=id)
+                print(id, qty, wine.name)
+
+                if wine.in_stock < 0:
+                    print("Not enough wine")
+                    continue
+
+                dic = request.session["cart"]
+                ordered_product = OrderedProduct(order=order, wine=wine, quantity=qty)
+                ordered_product.save()
+
+                # reduce the number of wines
+                wine.in_stock -= qty
+
+                wine.save(update_fields=["in_stock"])
+
+            del request.session["cart"]
+
+            return redirect("home")
+
+    else:
+        form = SubmitOrderForm(instance=logged_user)
 
     total_price = round(float(sum_price) + 9.99, 2)
 
@@ -397,6 +446,7 @@ def checkout_page(request):
         "whole_products": whole_products,
         "sum_price": sum_price,
         "logged_user": logged_user,
+        "form": form,
     }
     return render(request, "ordering_website/checkout_page.html", data)
 
@@ -489,7 +539,7 @@ def all_wines(request):
 
 
 def remove_opinion(request, wine_id, user_uid):
-    logged_user, is_logged = get_user(request)
+    logged_user, _ = get_user(request)
     is_admin = check_if_admin(logged_user)
 
     if not is_admin:
@@ -512,11 +562,14 @@ def orders(request):
     if not is_admin:
         return redirect("home")
 
+    orders = OrderData.objects.all()
+
     data = {
         "is_logged": is_logged,
         "is_admin": is_admin,
         "logged_user": logged_user,
         "items_in_cart": items_in_cart,
+        "orders": orders,
     }
     return render(request, "ordering_website/orders.html", data)
 

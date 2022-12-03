@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import User, Wine
+from .models import OrderData, User, Wine
 from django import forms
 from django.contrib.auth.hashers import make_password
 
@@ -116,4 +116,26 @@ class RatingForm(ModelForm):
         model = Wine
         fields = [
             "description"
+        ]
+
+
+class SubmitOrderForm(ModelForm):
+    name = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "Jan"}))
+    surname = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "Kowalski"}))
+    email = forms.EmailField(widget=forms.TextInput(attrs={"placeholder": "przyklad@email.com"}))
+    city = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "Miasto"}))
+    phone_number = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "999999999"}))
+    zip_code = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "99-999"}))
+    address_and_number = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "Ulica 1"}))
+
+    class Meta:
+        model = OrderData
+        fields = [
+            "name",
+            "surname",
+            "email",
+            "city",
+            "phone_number",
+            "zip_code",
+            "address_and_number",
         ]

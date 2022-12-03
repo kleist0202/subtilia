@@ -1,0 +1,32 @@
+{% extends 'ordering_website/home.html' %}
+
+{% block content %}
+
+{% load static %}
+{% load ordering_website_extras %}
+
+<div class="mainContent">
+
+    <div class="container">
+        <h1>Zamówienia</h1>
+
+        {% for order in orders %}
+        <div class="post">
+            <div class="postHead">
+                <div class="mainInfoUsers">
+                    <div>
+                        <span class="textInfo">
+                            ID zamówienia: {{ order.order_id }}
+                        </span>
+                        <p>Status: {{ order.status }}</p>
+                    </div>
+                </div>
+                Czas: {{ order.order_time }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}
