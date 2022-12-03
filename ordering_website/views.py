@@ -503,6 +503,23 @@ def remove_opinion(request, wine_id, user_uid):
     return redirect("wine_page", wine_id)
 
 
+def orders(request):
+    logged_user, is_logged = get_user(request)
+    is_admin = check_if_admin(logged_user)
+
+    items_in_cart = get_cart_items_number(request)
+
+    if not is_admin:
+        return redirect("home")
+
+    data = {
+        "is_logged": is_logged,
+        "is_admin": is_admin,
+        "logged_user": logged_user,
+        "items_in_cart": items_in_cart,
+    }
+    return render(request, "ordering_website/orders.html", data)
+
 # ------------------ useful functions ---------------------
 
 

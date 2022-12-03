@@ -23,6 +23,7 @@ urlpatterns = [
     path('switch_admin_user/<uuid:user_uid>/', views.switch_admin_user, name="switch_admin_user"),
     path('remove_wine/<int:wine_id>/', views.remove_wine, name="remove_wine"),
     path('remove_opinion/<int:wine_id>/<uuid:user_uid>', views.remove_opinion, name="remove_opinion"),
+    path('orders', views.orders, name="orders"),
 ]
 
 if settings.DEBUG:

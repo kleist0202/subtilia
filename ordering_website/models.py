@@ -1,7 +1,10 @@
+from random import random
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator, RegexValidator, MaxLengthValidator
 
 import uuid
+
+from django.urls.resolvers import string
 
 
 class Ranks(models.TextChoices):
@@ -68,3 +71,74 @@ class Rating(models.Model):
 
     def __str__(self):
         return self.rate_id
+
+
+class PaymentMethods(models.TextChoices):
+    TRANSFER = "transfer"
+    PAYPAL = "paypal"
+
+
+class DeliveryMethods(models.TextChoices):
+    COURIER = "courier"
+    PARCEL_LOCKER = "parcel_locker"
+
+
+class OrderStatus(models.TextChoices):
+    ORDERED = "courier"
+    PAID = "paid"
+    SENT = "sent"
+    DELIVERED = "delivered"
+
+
+class OrderData(models.Model):
+    order_id = models.SlugField(primary_key=True, unique=True, editable=False, blank=True)
+
+    name = models.CharField(default='', max_length=255, null=True)
+    surname = models.CharField(default='', max_length=255, null=True)
+    email = models.CharField(unique=True, max_length=255)
+    city = models.CharField(default='', max_length=255, null=True)
+    rank = models.CharField(max_length=20, choices=Ranks.choices, default=Ranks.USER)
+
+    phone_regex = RegexValidator(
+        regex=r"^\+?1?\d{9,9}$",
+        message="Phone number must be entered in the format: '+999999999'.",
+    )
+    phone_number = models.CharField(default='', max_length=9, validators=[phone_regex], null=True)
+
+    zip_regex = RegexValidator(
+        regex=r"\d{2}-\d{3}",
+        message="Zip code format must be in the format: XX-XXX.",
+    )
+    zip_code = models.CharField(default='', max_length=6, validators=[zip_regex], null=True)
+
+    address_and_number = models.CharField(default='', max_length=255, null=True)
+
+    payment = models.CharField(max_length=20, choices=PaymentMethods.choices, default=PaymentMethods.TRANSFER)
+    delivery = models.CharField(max_length=20, choices=DeliveryMethods.choices, default=DeliveryMethods.COURIER)
+    status = models.CharField(max_length=20, choices=OrderStatus.choices, default=OrderStatus.ORDERED)
+
+    def __str__(self):
+        return self.order_id
+
+    def save(self, *args, **kwargs):
+        while not self.order_id:
+            newslug = ''.join([
+                random.sample(string.letters, 2),
+                random.sample(string.digits, 2),
+                random.sample(string.letters, 2),
+            ])
+
+            if not self.objects.filter(pk=newslug).exists():
+                self.slug = newslug
+
+        super().save(*args, **kwargs)
+
+    # class Meta:
+    #     abstract = True
+
+
+class OrderedProduct(models.Model):
+    id = models.AutoField(primary_key=True)
+    order = models.ForeignKey(OrderData, on_delete=models.CASCADE)
+    wine = models.ForeignKey(Wine, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(validators=[MinValueValidator(0), MaxValueValidator(1000)])
