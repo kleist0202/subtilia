@@ -244,19 +244,19 @@ def wine_page(request, wine_id):
             if str(wine_id) not in request.session["cart"].keys():
                 request.session["cart"][str(wine_id)] = 0
 
-            for id, qty in request.session["cart"].items():
-                if "product_num" in request.POST:
-                    qty = int(request.POST["product_num"])
+            # for id, qty in request.session["cart"].items():
+            if "product_num" in request.POST:
+                qty = int(request.POST["product_num"])
+                print(qty)
 
-                    dic = request.session["cart"]
+                dic = request.session["cart"]
 
-                    if dic[str(wine_id)] + qty > chosen_wine.in_stock:
-                        messages.error(request, "Podana liczba przekracza dostępną ilość produktu!", extra_tags='too_much')
-                        break
-                    else:
-                        dic[str(id)] += qty
-                        request.session["cart"] = dic
-                        return redirect("wine_page", wine_id)
+                if dic[str(wine_id)] + qty > chosen_wine.in_stock:
+                    messages.error(request, "Podana liczba przekracza dostępną ilość produktu!", extra_tags='too_much')
+                else:
+                    dic[str(wine_id)] += qty
+                    request.session["cart"] = dic
+                    return redirect("wine_page", wine_id)
 
             if "rate" in request.POST:
                 rate = request.POST["rate"]
