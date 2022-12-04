@@ -112,12 +112,6 @@ hr {
     color: white;
 }
 
-@media (max-width:768px) {
-}
-
-@media (max-width:450) {
-}
-
 .messageNumberInfo {
     color: black;
     font-weight: bold;
@@ -830,7 +824,6 @@ span.price {
 }
 
 .product-content {
-    /* margin-left: 20px; */
     margin: 0;
     padding: 20px;
     height: auto;
@@ -923,8 +916,6 @@ span.price {
 }
 
 .product-content .buttons button.cart {
-    /* flex: 1 1 10rem; */
-    /* width: 15rem; */
     padding: 1rem;
     font-size: 1.2rem;
     color: #444;
@@ -933,9 +924,6 @@ span.price {
     background: var(--wine-red-color);
     color: #fff;
     text-decoration: none;
-    /* position: absolute; */
-    /* bottom: 2rem; */
-    /* left: 2rem; */
     position: relative;
     top: 10px;
     bottom: 10px;
