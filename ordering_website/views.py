@@ -563,7 +563,9 @@ def orders(request):
     if not is_admin:
         return redirect("home")
 
-    orders = OrderData.objects.all()
+    orders = OrderData.objects.all().order_by('-order_time')
+
+    status_dict = {"ordered": "Zamówione", "paid": "Zapłacone", "sent": "Wysłane", "delivered": "Dostarczone" }
 
     data = {
         "is_logged": is_logged,
@@ -571,6 +573,7 @@ def orders(request):
         "logged_user": logged_user,
         "items_in_cart": items_in_cart,
         "orders": orders,
+        "status_dict": status_dict
     }
     return render(request, "ordering_website/orders.html", data)
 
@@ -589,6 +592,8 @@ def check_order(request, order_id):
 
     full_order_price = sum(ordered_wine.full_price for ordered_wine in ordered_wines)
 
+    status_dict = {"ordered": "Zamówione", "paid": "Zapłacone", "sent": "Wysłane", "delivered": "Dostarczone" }
+
     data = {
         "is_logged": is_logged,
         "is_admin": is_admin,
@@ -596,7 +601,8 @@ def check_order(request, order_id):
         "items_in_cart": items_in_cart,
         "order": order,
         "ordered_wines": ordered_wines,
-        "full_order_price": full_order_price
+        "full_order_price": full_order_price,
+        "status_dict": status_dict
     }
 
     return render(request, "ordering_website/check_order.html", data)
@@ -620,6 +626,19 @@ def cancel_order(request, order_id):
 
     return redirect("orders")
 
+
+def update_order_status(request, order_id, status):
+    logged_user, _ = get_user(request)
+    is_admin = check_if_admin(logged_user)
+
+    if not is_admin:
+        return redirect("home")
+
+    order = OrderData.objects.get(pk=order_id)
+    order.status = status
+    order.save(update_fields=["status"])
+
+    return redirect("check_order", order_id)
 
 # ------------------ useful functions ---------------------
 

@@ -55,7 +55,16 @@
                             </div>
                             <div class="col-25">
                                 <h2>Status</h2>
-                                <span class="order-data-part">{{ order.status }}</span>
+                                <div class="status-boxes">
+                                    <li><a href="#"><span class="order-data-part">{{ status_dict|lookup:order.status }}</span></a>
+                                        <ul>
+                                            <li><a class="order-data-part" href="{% url 'update_order_status' order.order_id 'ordered' %}">Zamówione</a></li>
+                                            <li><a class="order-data-part" href="{% url 'update_order_status' order.order_id 'paid' %}">Zapłacone</a></li>
+                                            <li><a class="order-data-part" href="{% url 'update_order_status' order.order_id 'sent' %}">Wysłane</a></li>
+                                            <li><a class="order-data-part" href="{% url 'update_order_status' order.order_id 'delivered' %}">Dostarczone</a></li>
+                                        </ul>
+                                    </li>
+                                </div>
                             </div>
                         </div>
                     </div>

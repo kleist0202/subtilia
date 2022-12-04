@@ -1434,7 +1434,7 @@ user-
 }
 
 .order-data-part {
-    color: #f00;
+    color:  var(--wine-red-color);
     font-weight: bold;
 }
 
@@ -1443,6 +1443,61 @@ user-
     padding: 20px;
     font-size: 1.2rem;
     font-weight: bold;
+}
+
+.status-boxes li {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    background-color: #eee;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+}
+
+.status-boxes > li:first-child {
+    border: 1px solid #888;
+}
+
+.status-boxes > li:first-child:hover {
+    background-color: #bbb;
+}
+
+.status-boxes li a {
+    text-decoration: none;
+}
+
+.status-boxes li > ul {
+    list-style-type: none;
+    margin: 0;
+    margin-top: -1px;
+    padding: 0;
+    display: none;
+}
+
+.status-boxes li:hover > ul {
+    display: block;
+}
+
+.status-boxes li > ul > li {
+    border-bottom: 1px solid #888;
+    border-left: 1px solid #888;
+    border-right: 1px solid #888;
+    background-color: #ddd;
+    position: relative;
+    z-index: 100;
+}
+
+.status-boxes li > ul > li:hover {
+    background-color: var(--wine-red-color);
+}
+
+.status-boxes li > ul > li a {
+    display: block;
+}
+
+.status-boxes li > ul > li:hover a {
+    color: #fff;
 }
 
 /* overall */

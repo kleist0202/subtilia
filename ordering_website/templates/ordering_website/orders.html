@@ -18,7 +18,7 @@
                         <span class="textInfo">
                             ID zamówienia: {{ order.order_id }}
                         </span>
-                        <p>Status: {{ order.status }}</p>
+                        <p>Status: {{ status_dict|lookup:order.status }}</p>
                     </div>
                 </div>
                 Czas: {{ order.order_time }}
