@@ -73,13 +73,14 @@
                             <span>Ilość:
                             {{ product.quantity }}
                             </span>
-                            <span>Razem:
+                            <span>Suma:
                             {{ product.full_price }}
                             </span>
                         </p>
                     </div>
                 </div>
                 {% endfor %}
+                <div class=full-order-price><span>Razem: {{ full_order_price }}</span></div>
             </div>
         </div>
     </div>

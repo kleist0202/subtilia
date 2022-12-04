@@ -1438,6 +1438,13 @@ user-
     font-weight: bold;
 }
 
+.full-order-price {
+    text-align: right;
+    padding: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
 /* overall */
 
 .not-visible {

@@ -587,13 +587,16 @@ def check_order(request, order_id):
     order = OrderData.objects.get(pk=order_id)
     ordered_wines = OrderedProduct.objects.filter(order=order_id)
 
+    full_order_price = sum(ordered_wine.full_price for ordered_wine in ordered_wines)
+
     data = {
         "is_logged": is_logged,
         "is_admin": is_admin,
         "logged_user": logged_user,
         "items_in_cart": items_in_cart,
         "order": order,
-        "ordered_wines": ordered_wines
+        "ordered_wines": ordered_wines,
+        "full_order_price": full_order_price
     }
 
     return render(request, "ordering_website/check_order.html", data)
