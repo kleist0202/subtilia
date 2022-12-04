@@ -25,6 +25,7 @@ urlpatterns = [
     path('remove_opinion/<int:wine_id>/<uuid:user_uid>', views.remove_opinion, name="remove_opinion"),
     path('orders', views.orders, name="orders"),
     path('check_order/<str:order_id>/', views.check_order, name="check_order"),
+    path('cancel_order/<str:order_id>/', views.cancel_order, name="cancel_order"),
 ]
 
 if settings.DEBUG:

@@ -10,6 +10,10 @@
         <h1>Dane zamawiającego</h1>
         <div class="summary-items">
             <div class="cart-total order-data auto-height">
+                <a href="{% url 'cancel_order' order.order_id %}" class="remove-order">
+                    <i class="fa fa-remove" aria-hidden="true"></i>
+                    <span>Anuluj zamówienie</span>
+                </a>
                 <div class="row">
                     <div class="col-50">
                         <h2>Dane rozliczeniowe</h2>
@@ -56,6 +60,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
             <div class="cart-total order-data bought-items">
                 {% for product in ordered_wines %}

@@ -53,7 +53,7 @@
                     <span>Liczba produktów</span>
                     <span>{{ items_in_cart }}</span>
                 </p>
-                <a href="{% url 'checkout_page' %}">Przejdź do kasy</a>
+                <a class="to-checkout" href="{% url 'checkout_page' %}">Przejdź do kasy</a>
             </div>
             {% else %}
                 <span>W koszyku nie ma żadnych produktów.</span>

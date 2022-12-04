@@ -586,7 +586,6 @@ def check_order(request, order_id):
 
     order = OrderData.objects.get(pk=order_id)
     ordered_wines = OrderedProduct.objects.filter(order=order_id)
-    print(order.name)
 
     data = {
         "is_logged": is_logged,
@@ -598,6 +597,26 @@ def check_order(request, order_id):
     }
 
     return render(request, "ordering_website/check_order.html", data)
+
+
+def cancel_order(request, order_id):
+    logged_user, _ = get_user(request)
+    is_admin = check_if_admin(logged_user)
+
+    if not is_admin:
+        return redirect("home")
+
+    order = OrderData.objects.get(pk=order_id)
+    ordered_wines = OrderedProduct.objects.filter(order=order_id)
+    for wine_order in ordered_wines:
+        wine = Wine.objects.get(pk=wine_order.wine.wine_id)
+        wine.in_stock += wine_order.quantity
+        wine.save(update_fields=["in_stock"])
+
+    order.delete()
+
+    return redirect("orders")
+
 
 # ------------------ useful functions ---------------------
 
