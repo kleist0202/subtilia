@@ -30,7 +30,7 @@
                                 </div>
                             </div>
                             <label for="adr"><i class="fa fa-address-card-o"></i> Adres i numer</label>
-                            <input type="text" id="adr" name="adr" pattern="^[a-zA-Z]+?\s\w+$" maxlength="255" placeholder="Sezamkowa 1" value="{{ logged_user.address_and_number }}">
+                            <input type="text" id="adr" name="adr" pattern="\d{1,500}+?\s\w+$" maxlength="255" placeholder="Sezamkowa 1" value="{{ logged_user.address_and_number }}">
                             <label for="phone"><i class="fa fa-phone"></i> Numer telefonu</label>
                             <input type="text" id="phone" name="phone" pattern="[0-9]{9}" maxlength="9" pattern="^\+?1?\d{9,9}$" placeholder="999999999" value="{{ logged_user.phone_number }}">
 
