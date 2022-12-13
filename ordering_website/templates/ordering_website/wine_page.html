@@ -119,7 +119,9 @@
                 {% else %}
                 <h2>Gość</h2>
                 {% endif %}
+                {% if is_admin %}
                 <a class="remove-button admin-action" href="{% url 'remove_opinion' rate.wine.wine_id rate.author.user_uid %}">Usuń</a></h2>
+                {% endif %}
                 <div class ="stars">
                     {% for x in star_range %}
                         {% if x < rate.rate|add:1 %}
