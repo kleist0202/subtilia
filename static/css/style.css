@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;500;600&display=swap');
 
+@font-face {
+    font-family: 'mainFont';
+    src: url('/static/fonts/BlackChancerry.ttf'); /*URL to font*/
+}
+
 :root {
     --wine-red-color: #98142e;
     --dark-red-color: #691426;
@@ -23,8 +28,23 @@ html {
 
 body {
     margin:0;
-    margin-top: 60px; 
-    background: #f1f1f1;
+    margin-top: 80px; 
+background: rgb(222,202,198);
+background: linear-gradient(0deg, rgba(222,202,198,1) 0%, rgba(240, 215, 173,1) 100%);
+}
+
+body::after {
+  content: "";
+  background:url('/images/Logo.png');
+  background-repeat: no-repeat;
+  background-position: bottom -150px right 0px;
+  opacity: 0.1;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: fixed;
+  z-index: -1;   
 }
 
 a {
@@ -53,10 +73,10 @@ hr {
 .navbar {
     z-index: 1;
     overflow: hidden;
-    background-color: #333;
+    background-color: #590d22;
     position: fixed;
     top: 0; 
-    height: 60px;
+    height: 80px;
     width: 100%;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.1);
 }
@@ -68,8 +88,8 @@ hr {
     color: #f2f2f2;
     padding: 0px 16px;
     text-decoration: none;
-    height: 60px;
-    line-height: 60px;
+    height: 80px;
+    line-height: 80px;
     font-size: 1.3rem;
 }
 
@@ -125,15 +145,17 @@ hr {
     align-items: center;
     top: 0px;
     left: 65px;
-    height: 60px;
+    height: 80px;
     position: absolute;
 }
 
 .website-title a {
-    font-weight: bold;
-    font-size: 34px;
-    color: var(--wine-red-color);
+	/*font-weight: 900;*/
+	letter-spacing: 3px;
+    font-size: 50px;
+    color: white;
     text-decoration: none;
+	font-family: 'mainFont';
 }
 
 /* hamburger menu */
@@ -190,7 +212,7 @@ hr {
 .menuBox {
     display: block;
     position: fixed;
-    top: 60px;
+    top: 80px;
     left: -200%;
     width: 333px;
     margin: 0;
@@ -1412,7 +1434,7 @@ user-
     position: relative;
     z-index: 0;
     width: 100%;
-    height: 100px;
+    height: 60px;
     background: #333; 
     color: #f2f2f2;
     margin-top: 50px;
