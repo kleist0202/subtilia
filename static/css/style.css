@@ -180,7 +180,7 @@ hr {
 
 .menuButton {
     position: fixed;
-    top: 40px;
+    top: 38px;
     left: 20px;
     width: 26px;
     height: 26px;
@@ -218,7 +218,7 @@ hr {
     margin: 0;
     padding: 20px 0;
     list-style: none;
-    background-color: #333;
+    background-color: #590d22;
     box-shadow: 2px 2px 6px rgba(0, 0, 0, .4);
     transition-duration: .25s;
 }
