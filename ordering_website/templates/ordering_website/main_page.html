@@ -1,0 +1,51 @@
+<html lang="pl">
+    <head>
+        <title>Winnica Subtilia</title>
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/styleMainPage.css' %}" />
+        <link rel="shortcut icon" href="#" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    </head>
+
+    <body>
+        <div class="mainContent">
+			<div style="padding:100px">
+				<div class="mainTitle">
+					Winnica Subtilia
+				</div>
+				<div class="mainTitle" style="width:60%">
+					<div class="item">
+						<div class="polaroid">
+							<img src="static/images/main3.jpg">
+						</div>
+					</div>
+					<div class="item" style="left:440px">
+						<div class="polaroid">
+							<img src="static/images/main2.jpg">
+						</div>
+					</div>
+					<div class="item" style="left:420px; top:440px;">
+						<div class="polaroid">
+							<img src="static/images/main1.jpg">
+						</div>
+					</div>
+					<div class="item" style="left:50px; top:440px;">
+						<div class="polaroid">
+							<img src="static/images/main4.jpg">
+						</div>
+					</div>
+				</div>
+				<div class="descriptionContent">
+					"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+				</div>
+				<div style="position: absolute; top: 800px;">
+					<a class="button" href="{% url 'home' %}">E-Sklep</a>
+					<a class="button" style="visibility:hidden;">A</a>
+					<a class="button" href="">Test smakowy</a>
+				</div>
+			</div>
+		</div>
+    </body>
+
+</html>

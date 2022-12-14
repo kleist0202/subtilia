@@ -39,6 +39,16 @@ def home(request):
         "star_range": range(1,5 + 1)
     }
     return render(request, "ordering_website/home.html", data)
+   
+def main_page(request):
+    logged_user, is_logged = get_user(request)
+    is_admin = check_if_admin(logged_user)
+    if is_logged:
+        return redirect("home")
+    data = {
+        "is_logged": is_logged
+    }
+    return render(request, "ordering_website/main_page.html", data)
 
 
 def registration_page(request):
