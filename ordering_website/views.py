@@ -63,7 +63,7 @@ def registration_page(request):
             form.save()
             current_username = form.cleaned_data.get("username")
             print(current_username)
-            messages.success(request, "Account was created successfully")
+            messages.success(request, "Konto zostało utworzone pomyślnie")
             return redirect("login")
     else:
         form = CreateUserForm()
@@ -89,9 +89,9 @@ def login_page(request):
                 request.session["email"] = user.email
                 return redirect("home")
             else:
-                messages.error(request, "Invalid password for email: " + user.email)
+                messages.error(request, "Nieprawidłowe hasło dla: " + user.email)
         else:
-            messages.error(request, "There is no such account")
+            messages.error(request, "Nie ma takiego konta")
 
     data = {"form": form, "items_in_cart": items_in_cart}
 
@@ -326,7 +326,7 @@ def add_wine_page(request):
         form = AddWineForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            messages.success(request, "Wine was created successfully", extra_tags="wine_created")
+            messages.success(request, "Wino dodane pomyślnie", extra_tags="wine_created")
             return redirect("add_wine_page")
     else:
         form = AddWineForm()
@@ -358,7 +358,7 @@ def update_wine_page(request, wine_id):
         form = AddWineForm(request.POST, request.FILES, instance=wine)
         if form.is_valid():
             form.save()
-            messages.success(request, "Wine was updated successfully", extra_tags="wine_updated")
+            messages.success(request, "Wino zaktalizowane pomyślnie", extra_tags="wine_updated")
             return redirect("wine_page", wine_id)
 
     data = {
@@ -441,7 +441,7 @@ def checkout_page(request):
                 wine.save(update_fields=["in_stock"])
 
             del request.session["cart"]
-
+            messages.success(request, f"Zamówienie zostało złożone pomyślnie. Numer zamówienia: {order.order_id}", extra_tags='order_success')
             return redirect("home")
 
     else:
@@ -570,10 +570,13 @@ def orders(request):
 
     items_in_cart = get_cart_items_number(request)
 
-    if not is_admin:
+    if not is_logged:
         return redirect("home")
+    else:
+        orders = OrderData.objects.filter(email=logged_user.email).order_by('-order_time')
 
-    orders = OrderData.objects.all().order_by('-order_time')
+    if is_admin:
+        orders = OrderData.objects.all().order_by('-order_time')
 
     status_dict = {"ordered": "Zamówione", "paid": "Zapłacone", "sent": "Wysłane", "delivered": "Dostarczone" }
 
@@ -594,10 +597,18 @@ def check_order(request, order_id):
 
     items_in_cart = get_cart_items_number(request)
 
-    if not is_admin:
+    if not is_logged:
         return redirect("home")
 
-    order = OrderData.objects.get(pk=order_id)
+    if is_logged and not is_admin:
+        try:
+            order = OrderData.objects.get(pk=order_id, email=logged_user.email)
+        except OrderData.DoesNotExist:
+            return redirect("home")
+
+    if is_admin:
+        order = OrderData.objects.get(pk=order_id)
+
     ordered_wines = OrderedProduct.objects.filter(order=order_id)
 
     full_order_price = sum(ordered_wine.full_price for ordered_wine in ordered_wines)

@@ -4,6 +4,11 @@
 <div class="mainContent">
 
     <div class="container">
+        {%for message in messages %}
+            {%if "order_success" in message.tags %}
+                <span class="{{ message.tags }}">{{ message }}</span>
+            {%endif%}
+        {%endfor%}
         <h1>Produkty</h1>
         <div class="products-container">
         {% for wine in wines %}

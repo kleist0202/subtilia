@@ -9,6 +9,9 @@
             <li><a class="menuItem" href="{% url 'home' %}">Home</a></li>
             {% if is_logged %}
             <li><a class="menuItem" href="{% url 'profile' %}">Profil</a></li>
+            {% if not is_admin %}
+            <li><a class="menuItem" href="{% url 'orders' %}">Moje Zamówienia</a></li>
+            {% endif %}
             {% if is_admin %}
             <li><a class="menuItem admin-action" href="{% url 'add_wine_page' %}">Dodaj wino</a></li>
             <li><a class="menuItem admin-action" href="{% url 'users' %}">Użytkownicy</a></li>
